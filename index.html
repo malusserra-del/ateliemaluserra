@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ateliê Malu Serra — Agenda</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --rust: #B5522A;
+    --terracota: #C96A3A;
+    --mustard: #C49A2B;
+    --olive: #6B7C3A;
+    --cream: #F5EFE4;
+    --warm-white: #FAF6F0;
+    --dark: #2C2218;
+    --medium: #6B5B4E;
+    --light: #D4C4B0;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--warm-white);
+    color: var(--dark);
+    min-height: 100vh;
+  }
+
+  header {
+    background: var(--dark);
+    padding: 28px 32px 22px;
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    color: var(--cream);
+    letter-spacing: 0.02em;
+  }
+
+  header span {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    color: var(--terracota);
+    font-size: 1rem;
+  }
+
+  .week-bar {
+    background: var(--rust);
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    padding: 10px 16px;
+    flex-wrap: wrap;
+  }
+
+  .week-btn {
+    background: transparent;
+    border: 1.5px solid rgba(255,255,255,0.35);
+    color: rgba(255,255,255,0.75);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .week-btn:hover {
+    background: rgba(255,255,255,0.15);
+    color: white;
+  }
+
+  .week-btn.active {
+    background: var(--cream);
+    color: var(--rust);
+    border-color: var(--cream);
+    font-weight: 600;
+  }
+
+  .main {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 28px 20px 60px;
+  }
+
+  .day-section {
+    margin-bottom: 36px;
+    display: none;
+  }
+
+  .day-section.visible {
+    display: block;
+  }
+
+  .day-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+
+  .day-label {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    color: var(--dark);
+  }
+
+  .day-date {
+    font-size: 0.78rem;
+    color: var(--medium);
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    background: var(--cream);
+    border: 1px solid var(--light);
+    border-radius: 6px;
+    padding: 3px 9px;
+  }
+
+  .day-date.hoje {
+    background: var(--rust);
+    border-color: var(--rust);
+    color: white;
+    font-weight: 500;
+  }
+
+  .day-line {
+    flex: 1;
+    height: 1px;
+    background: var(--light);
+  }
+
+  .turma-card {
+    background: white;
+    border-radius: 12px;
+    border: 1px solid var(--light);
+    margin-bottom: 14px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(44,34,24,0.06);
+    transition: box-shadow 0.2s;
+  }
+
+  .turma-card:hover {
+    box-shadow: 0 4px 16px rgba(44,34,24,0.1);
+  }
+
+  .turma-top {
+    display: flex;
+    align-items: center;
+    padding: 14px 18px;
+    gap: 14px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .horario-badge {
+    background: var(--cream);
+    border: 1px solid var(--light);
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--rust);
+    white-space: nowrap;
+    min-width: 110px;
+    text-align: center;
+  }
+
+  .turma-info {
+    flex: 1;
+  }
+
+  .prof-tag {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--medium);
+    margin-bottom: 2px;
+  }
+
+  .turma-count {
+    font-size: 0.82rem;
+    color: var(--olive);
+    font-weight: 500;
+  }
+
+  .chevron {
+    color: var(--light);
+    font-size: 1rem;
+    transition: transform 0.2s;
+  }
+
+  .turma-card.open .chevron {
+    transform: rotate(180deg);
+  }
+
+  .turma-body {
+    display: none;
+    padding: 0 18px 18px;
+    border-top: 1px solid var(--cream);
+  }
+
+  .turma-card.open .turma-body {
+    display: block;
+  }
+
+  .alunos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 8px;
+    margin-top: 14px;
+  }
+
+  .aluno-chip {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--warm-white);
+    border: 1px solid var(--light);
+    border-radius: 8px;
+    padding: 8px 11px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .aluno-chip:hover {
+    border-color: var(--terracota);
+  }
+
+  .aluno-chip.presente {
+    background: #EEF5E8;
+    border-color: var(--olive);
+  }
+
+  .aluno-chip.faltou {
+    background: #FFF0EC;
+    border-color: #E08060;
+    opacity: 0.75;
+  }
+
+  .aluno-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--light);
+    flex-shrink: 0;
+    transition: background 0.15s;
+  }
+
+  .aluno-chip.presente .aluno-dot { background: var(--olive); }
+  .aluno-chip.faltou .aluno-dot { background: #E08060; }
+
+  .aluno-nome {
+    font-size: 0.82rem;
+    color: var(--dark);
+    font-weight: 400;
+    line-height: 1.2;
+  }
+
+  .presenca-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 14px;
+    flex-wrap: wrap;
+  }
+
+  .btn-small {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.75rem;
+    padding: 5px 12px;
+    border-radius: 6px;
+    border: 1.5px solid var(--light);
+    background: white;
+    color: var(--medium);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .btn-small:hover { border-color: var(--rust); color: var(--rust); }
+
+  .btn-small.olive { border-color: var(--olive); color: var(--olive); }
+  .btn-small.olive:hover { background: var(--olive); color: white; }
+
+  .reposicao-row {
+    display: flex;
+    gap: 7px;
+    margin-top: 10px;
+    align-items: center;
+  }
+
+  .reposicao-input {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.8rem;
+    flex: 1;
+    padding: 6px 11px;
+    border: 1.5px dashed var(--light);
+    border-radius: 8px;
+    background: var(--warm-white);
+    color: var(--dark);
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  .reposicao-input:focus { border-color: var(--mustard); }
+  .reposicao-input::placeholder { color: var(--light); }
+
+  .btn-add {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.8rem;
+    padding: 6px 12px;
+    border-radius: 8px;
+    border: 1.5px solid var(--mustard);
+    background: white;
+    color: var(--mustard);
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+
+  .btn-add:hover { background: var(--mustard); color: white; }
+
+  .aluno-chip.reposicao {
+    border-style: dashed;
+    border-color: var(--mustard);
+    background: #FDF8EC;
+  }
+
+  .aluno-chip.reposicao .aluno-dot { background: var(--mustard); }
+
+  .repo-badge {
+    font-size: 0.62rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--mustard);
+    font-weight: 600;
+  }
+
+  .presenca-summary {
+    font-size: 0.75rem;
+    color: var(--medium);
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--cream);
+  }
+
+  .nota-area {
+    margin-top: 10px;
+  }
+
+  .nota-area textarea {
+    width: 100%;
+    min-height: 60px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.8rem;
+    color: var(--dark);
+    background: var(--warm-white);
+    border: 1px solid var(--light);
+    border-radius: 8px;
+    padding: 8px 11px;
+    resize: vertical;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  .nota-area textarea:focus { border-color: var(--terracota); }
+  .nota-area textarea::placeholder { color: var(--light); }
+
+  .nota-label {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--medium);
+    margin-bottom: 6px;
+  }
+
+  .overview-bar {
+    background: var(--cream);
+    border: 1px solid var(--light);
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-bottom: 28px;
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .ov-item { text-align: center; }
+  .ov-num { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--rust); }
+  .ov-lbl { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--medium); }
+
+  @media (max-width: 500px) {
+    .alunos-grid { grid-template-columns: 1fr 1fr; }
+    header h1 { font-size: 1.2rem; }
+  }
+
+  .export-btn {
+    display: block;
+    width: 100%;
+    margin-bottom: 20px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    padding: 12px 18px;
+    border-radius: 10px;
+    border: 1.5px solid var(--rust);
+    background: white;
+    color: var(--rust);
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s;
+    letter-spacing: 0.03em;
+  }
+  .export-btn:hover { background: var(--rust); color: white; }
+
+  /* Modal */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(44,34,24,0.55);
+    z-index: 100;
+    align-items: flex-end;
+    justify-content: center;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal-box {
+    background: white;
+    border-radius: 18px 18px 0 0;
+    padding: 24px 20px 36px;
+    width: 100%;
+    max-width: 600px;
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+  .modal-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    color: var(--dark);
+    margin-bottom: 14px;
+  }
+  .modal-text {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.8rem;
+    color: var(--dark);
+    background: var(--warm-white);
+    border: 1px solid var(--light);
+    border-radius: 10px;
+    padding: 14px;
+    white-space: pre-wrap;
+    line-height: 1.7;
+    margin-bottom: 14px;
+  }
+  .modal-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+  .modal-btn {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    padding: 10px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.15s;
+    border: 1.5px solid var(--light);
+    background: white;
+    color: var(--medium);
+  }
+  .modal-btn.primary { background: var(--rust); color: white; border-color: var(--rust); }
+  .modal-btn:hover { opacity: 0.85; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Ateliê Malu Serra</h1>
+  <span>agenda de aulas</span>
+</header>
+
+<div class="week-bar">
+  <button class="week-btn active" onclick="showDay('all')">Semana toda</button>
+  <button class="week-btn" onclick="showDay('seg')">Segunda</button>
+  <button class="week-btn" onclick="showDay('ter')">Terça</button>
+  <button class="week-btn" onclick="showDay('qua')">Quarta</button>
+  <button class="week-btn" onclick="showDay('qui')">Quinta</button>
+</div>
+
+<div class="main">
+
+  <div class="overview-bar" id="overview">
+    <div class="ov-item"><div class="ov-num" id="ov-turmas">0</div><div class="ov-lbl">turmas</div></div>
+    <div class="ov-item"><div class="ov-num" id="ov-alunos">0</div><div class="ov-lbl">alunos</div></div>
+    <div class="ov-item"><div class="ov-num" id="ov-presentes">0</div><div class="ov-lbl">presentes</div></div>
+    <div class="ov-item"><div class="ov-num" id="ov-aulas">0</div><div class="ov-lbl">horas de aula</div></div>
+  </div>
+
+  <button class="export-btn" onclick="abrirExport()">📋 Gerar resumo do dia para WhatsApp</button>
+
+  <!-- Modal de exportação -->
+  <div class="modal-overlay" id="modal-export" onclick="fecharModalFora(event)">
+    <div class="modal-box">
+      <div class="modal-title">Resumo de presenças</div>
+      <div class="modal-text" id="modal-content"></div>
+      <div class="modal-actions">
+        <button class="modal-btn primary" onclick="copiarTexto()">📋 Copiar</button>
+        <button class="modal-btn" onclick="compartilhar()">↗ Compartilhar</button>
+        <button class="modal-btn" onclick="fecharModal()">Fechar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEGUNDA -->
+  <div class="day-section visible" data-day="seg">
+    <div class="day-header">
+      <span class="day-label">Segunda-feira</span>
+      <span class="day-date" id="date-seg"></span>
+      <div class="day-line"></div>
+    </div>
+
+    <div class="turma-card" id="turma-seg-manha">
+      <div class="turma-top" onclick="toggleTurma('turma-seg-manha')">
+        <div class="horario-badge">9h – 12h</div>
+        <div class="turma-info">
+          <div class="prof-tag">Prof. Malu</div>
+          <div class="turma-count" id="count-turma-seg-manha"></div>
+        </div>
+        <div class="chevron">▼</div>
+      </div>
+      <div class="turma-body">
+        <div class="alunos-grid" id="alunos-turma-seg-manha"></div>
+        <div class="presenca-actions">
+          <button class="btn-small olive" onclick="marcarTodos('turma-seg-manha', 'presente')">✓ Todos presentes</button>
+          <button class="btn-small" onclick="marcarTodos('turma-seg-manha', '')">Limpar</button>
+        </div>
+        <div class="presenca-summary" id="summary-turma-seg-manha"></div>
+        <div class="nota-area">
+          <div class="nota-label">Anotações da aula</div>
+          <textarea placeholder="O que foi trabalhado hoje, observações sobre alunos…" id="nota-turma-seg-manha"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="turma-card" id="turma-seg-noite">
+      <div class="turma-top" onclick="toggleTurma('turma-seg-noite')">
+        <div class="horario-badge">19h – 22h</div>
+        <div class="turma-info">
+          <div class="prof-tag">Prof. Marina</div>
+          <div class="turma-count" id="count-turma-seg-noite"></div>
+        </div>
+        <div class="chevron">▼</div>
+      </div>
+      <div class="turma-body">
+        <div class="alunos-grid" id="alunos-turma-seg-noite"></div>
+        <div class="presenca-actions">
+          <button class="btn-small olive" onclick="marcarTodos('turma-seg-noite', 'presente')">✓ Todos presentes</button>
+          <button class="btn-small" onclick="marcarTodos('turma-seg-noite', '')">Limpar</button>
+        </div>
+        <div class="presenca-summary" id="summary-turma-seg-noite"></div>
+        <div class="nota-area">
+          <div class="nota-label">Anotações da aula</div>
+          <textarea placeholder="O que foi trabalhado hoje, observações…" id="nota-turma-seg-noite"></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TERÇA -->
+  <div class="day-section visible" data-day="ter">
+    <div class="day-header">
+      <span class="day-label">Terça-feira</span>
+      <span class="day-date" id="date-ter"></span>
+      <div class="day-line"></div>
+    </div>
+
+    <div class="turma-card" id="turma-ter-tarde">
+      <div class="turma-top" onclick="toggleTurma('turma-ter-tarde')">
+        <div class="horario-badge">14h – 17h</div>
+        <div class="turma-info">
+          <div class="prof-tag">Prof. Malu</div>
+          <div class="turma-count" id="count-turma-ter-tarde"></div>
+        </div>
+        <div class="chevron">▼</div>
+      </div>
+      <div class="turma-body">
+        <div class="alunos-grid" id="alunos-turma-ter-tarde"></div>
+        <div class="presenca-actions">
+          <button class="btn-small olive" onclick="marcarTodos('turma-ter-tarde', 'presente')">✓ Todos presentes</button>
+          <button class="btn-small" onclick="marcarTodos('turma-ter-tarde', '')">Limpar</button>
+        </div>
+        <div class="presenca-summary" id="summary-turma-ter-tarde"></div>
+        <div class="nota-area">
+          <div class="nota-label">Anotações da aula</div>
+          <textarea placeholder="O que foi trabalhado hoje, observações…" id="nota-turma-ter-tarde"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="turma-card" id="turma-ter-noite">
+      <div class="turma-top" onclick="toggleTurma('turma-ter-noite')">
+        <div class="horario-badge">19h – 22h</div>
+        <div class="turma-info">
+          <div class="prof-tag">Prof. Malu</div>
+          <div class="turma-count" id="count-turma-ter-noite"></div>
+        </div>
+        <div class="chevron">▼</div>
+      </div>
+      <div class="turma-body">
+        <div class="alunos-grid" id="alunos-turma-ter-noite"></div>
+        <div class="presenca-actions">
+          <button class="btn-small olive" onclick="marcarTodos('turma-ter-noite', 'presente')">✓ Todos presentes</button>
+          <button class="btn-small" onclick="marcarTodos('turma-ter-noite', '')">Limpar</button>
+        </div>
+        <div class="presenca-summary" id="summary-turma-ter-noite"></div>
+        <div class="nota-area">
+          <div class="nota-label">Anotações da aula</div>
+          <textarea placeholder="O que foi trabalhado hoje, observações…" id="nota-turma-ter-noite"></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUARTA -->
+  <div class="day-section visible" data-day="qua">
+    <div class="day-header">
+      <span class="day-label">Quarta-feira</span>
+      <span class="day-date" id="date-qua"></span>
+      <div class="day-line"></div>
+    </div>
+
+    <div class="turma-card" id="turma-qua-manha">
+      <div class="turma-top" onclick="toggleTurma('turma-qua-manha')">
+        <div class="horario-badge">9h – 12h</div>
+        <div class="turma-info">
+          <div class="prof-tag">Prof. Malu</div>
+          <div class="turma-count" id="count-turma-qua-manha"></div>
+        </div>
+        <div class="chevron">▼</div>
+      </div>
+      <div class="turma-body">
+        <div class="alunos-grid" id="alunos-turma-qua-manha"></div>
+        <div class="presenca-actions">
+          <button class="btn-small olive" onclick="marcarTodos('turma-qua-manha', 'presente')">✓ Todos presentes</button>
+          <button class="btn-small" onclick="marcarTodos('turma-qua-manha', '')">Limpar</button>
+        </div>
+        <div class="presenca-summary" id="summary-turma-qua-manha"></div>
+        <div class="nota-area">
+          <div class="nota-label">Anotações da aula</div>
+          <textarea placeholder="O que foi trabalhado hoje, observações…" id="nota-turma-qua-manha"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="turma-card" id="turma-qua-tarde">
+      <div class="turma-top" onclick="toggleTurma('turma-qua-tarde')">
+        <div class="horario-badge">14h – 17h</div>
+        <div class="turma-info">
+          <div class="prof-tag">Prof. Malu</div>
+          <div class="turma-count" id="count-turma-qua-tarde"></div>
+        </div>
+        <div class="chevron">▼</div>
+      </div>
+      <div class="turma-body">
+        <div class="alunos-grid" id="alunos-turma-qua-tarde"></div>
+        <div class="presenca-actions">
+          <button class="btn-small olive" onclick="marcarTodos('turma-qua-tarde', 'presente')">✓ Todos presentes</button>
+          <button class="btn-small" onclick="marcarTodos('turma-qua-tarde', '')">Limpar</button>
+        </div>
+        <div class="presenca-summary" id="summary-turma-qua-tarde"></div>
+        <div class="nota-area">
+          <div class="nota-label">Anotações da aula</div>
+          <textarea placeholder="O que foi trabalhado hoje, observações…" id="nota-turma-qua-tarde"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="turma-card" id="turma-qua-noite">
+      <div class="turma-top" onclick="toggleTurma('turma-qua-noite')">
+        <div class="horario-badge">19h – 22h</div>
+        <div class="turma-info">
+          <div class="prof-tag">Prof. Mariana</div>
+          <div class="turma-count" id="count-turma-qua-noite"></div>
+        </div>
+        <div class="chevron">▼</div>
+      </div>
+      <div class="turma-body">
+        <div class="alunos-grid" id="alunos-turma-qua-noite"></div>
+        <div class="presenca-actions">
+          <button class="btn-small olive" onclick="marcarTodos('turma-qua-noite', 'presente')">✓ Todos presentes</button>
+          <button class="btn-small" onclick="marcarTodos('turma-qua-noite', '')">Limpar</button>
+        </div>
+        <div class="presenca-summary" id="summary-turma-qua-noite"></div>
+        <div class="nota-area">
+          <div class="nota-label">Anotações da aula</div>
+          <textarea placeholder="O que foi trabalhado hoje, observações…" id="nota-turma-qua-noite"></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUINTA -->
+  <div class="day-section visible" data-day="qui">
+    <div class="day-header">
+      <span class="day-label">Quinta-feira</span>
+      <span class="day-date" id="date-qui"></span>
+      <div class="day-line"></div>
+    </div>
+
+    <div class="turma-card" id="turma-qui-tarde">
+      <div class="turma-top" onclick="toggleTurma('turma-qui-tarde')">
+        <div class="horario-badge">14h – 17h</div>
+        <div class="turma-info">
+          <div class="prof-tag">Prof. Malu</div>
+          <div class="turma-count" id="count-turma-qui-tarde"></div>
+        </div>
+        <div class="chevron">▼</div>
+      </div>
+      <div class="turma-body">
+        <div class="alunos-grid" id="alunos-turma-qui-tarde"></div>
+        <div class="presenca-actions">
+          <button class="btn-small olive" onclick="marcarTodos('turma-qui-tarde', 'presente')">✓ Todos presentes</button>
+          <button class="btn-small" onclick="marcarTodos('turma-qui-tarde', '')">Limpar</button>
+        </div>
+        <div class="presenca-summary" id="summary-turma-qui-tarde"></div>
+        <div class="nota-area">
+          <div class="nota-label">Anotações da aula</div>
+          <textarea placeholder="O que foi trabalhado hoje, observações…" id="nota-turma-qui-tarde"></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<script>
+const turmas = {
+  'turma-seg-manha': ['Santuza','Silvia','Taciana','Marina','Néia'],
+  'turma-seg-noite': ['Carol'],
+  'turma-ter-tarde': ['Luiza','Carla','Sandra','Kati','Tane'],
+  'turma-ter-noite': ['Alessandra','Sonia','Gabriela','Ana','Renato'],
+  'turma-qua-manha': ['Ivan','Conceição','Ellea'],
+  'turma-qua-tarde': ['Silvinha','Junia','Fernanda','Nora','Conceição','Marina'],
+  'turma-qua-noite': ['Thiago','Samantha','Luiza','Ivany'],
+  'turma-qui-tarde': ['Esther','Ju','Clara','Flavia'],
+};
+
+const presencas = {};
+const reposicoes = {}; // alunos extras de reposição por turma
+
+// Calcula e exibe as datas da semana atual
+function setDates() {
+  const hoje = new Date();
+  const diaSemana = hoje.getDay(); // 0=dom, 1=seg, 2=ter, 3=qua, 4=qui, 5=sex, 6=sab
+
+  // Encontra a segunda-feira desta semana
+  const seg = new Date(hoje);
+  seg.setDate(hoje.getDate() - ((diaSemana + 6) % 7));
+
+  const dias = { seg: 0, ter: 1, qua: 2, qui: 3 };
+
+  for (const [key, offset] of Object.entries(dias)) {
+    const d = new Date(seg);
+    d.setDate(seg.getDate() + offset);
+    const dd = String(d.getDate()).padStart(2, '0');
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    const el = document.getElementById('date-' + key);
+    if (el) {
+      el.textContent = dd + '/' + mm;
+      const isHoje = d.toDateString() === hoje.toDateString();
+      if (isHoje) el.classList.add('hoje');
+    }
+  }
+}
+
+function buildTurmas() {
+  for (const [id, alunos] of Object.entries(turmas)) {
+    presencas[id] = {};
+    reposicoes[id] = [];
+    alunos.forEach(a => presencas[id][a] = '');
+    renderAlunos(id);
+    updateCount(id);
+    injectReposicaoRow(id);
+  }
+  updateOverview();
+}
+
+function injectReposicaoRow(turmaId) {
+  const body = document.querySelector(`#${turmaId} .turma-body`);
+  if (!body) return;
+  const row = document.createElement('div');
+  row.className = 'reposicao-row';
+  row.id = 'repo-row-' + turmaId;
+  row.innerHTML = `
+    <input class="reposicao-input" id="repo-input-${turmaId}" type="text" placeholder="+ Reposição — nome da aluna" />
+    <button class="btn-add" onclick="adicionarReposicao('${turmaId}')">Adicionar</button>
+  `;
+  // insere antes da nota-area
+  const nota = body.querySelector('.nota-area');
+  body.insertBefore(row, nota);
+
+  // permite Enter para confirmar
+  row.querySelector('input').addEventListener('keydown', e => {
+    if (e.key === 'Enter') adicionarReposicao(turmaId);
+  });
+}
+
+function renderAlunos(turmaId) {
+  const grid = document.getElementById('alunos-' + turmaId);
+  if (!grid) return;
+  grid.innerHTML = '';
+  // alunos fixos
+  turmas[turmaId].forEach(nome => {
+    const estado = presencas[turmaId][nome] || '';
+    const chip = document.createElement('div');
+    chip.className = 'aluno-chip' + (estado ? ' ' + estado : '');
+    chip.innerHTML = `<div class="aluno-dot"></div><div class="aluno-nome">${nome}</div>`;
+    chip.onclick = () => togglePresenca(turmaId, nome);
+    grid.appendChild(chip);
+  });
+  // reposições
+  (reposicoes[turmaId] || []).forEach((r, i) => {
+    const chip = document.createElement('div');
+    chip.className = 'aluno-chip reposicao' + (r.presente ? ' presente' : '');
+    chip.innerHTML = `
+      <div class="aluno-dot"></div>
+      <div style="flex:1">
+        <div class="aluno-nome">${r.nome}</div>
+        <div class="repo-badge">reposição</div>
+      </div>
+      <span onclick="removerReposicao('${turmaId}',${i})" style="font-size:0.75rem;color:#ccc;cursor:pointer;padding-left:4px" title="Remover">✕</span>
+    `;
+    chip.onclick = (e) => {
+      if (e.target.closest('span')) return;
+      r.presente = !r.presente;
+      renderAlunos(turmaId);
+      updateCount(turmaId);
+      updateOverview();
+    };
+    grid.appendChild(chip);
+  });
+  updateSummary(turmaId);
+}
+
+function togglePresenca(turmaId, nome) {
+  const atual = presencas[turmaId][nome];
+  if (atual === '') presencas[turmaId][nome] = 'presente';
+  else if (atual === 'presente') presencas[turmaId][nome] = 'faltou';
+  else presencas[turmaId][nome] = '';
+  renderAlunos(turmaId);
+  updateCount(turmaId);
+  updateOverview();
+}
+
+function adicionarReposicao(turmaId) {
+  const input = document.getElementById('repo-input-' + turmaId);
+  const nome = input.value.trim();
+  if (!nome) return;
+  reposicoes[turmaId].push({ nome, presente: true });
+  input.value = '';
+  renderAlunos(turmaId);
+  updateCount(turmaId);
+  updateOverview();
+}
+
+function removerReposicao(turmaId, index) {
+  reposicoes[turmaId].splice(index, 1);
+  renderAlunos(turmaId);
+  updateCount(turmaId);
+  updateOverview();
+}
+
+function marcarTodos(turmaId, estado) {
+  turmas[turmaId].forEach(nome => { presencas[turmaId][nome] = estado; });
+  (reposicoes[turmaId] || []).forEach(r => { r.presente = estado === 'presente'; });
+  renderAlunos(turmaId);
+  updateCount(turmaId);
+  updateOverview();
+}
+
+function updateCount(turmaId) {
+  const alunos = turmas[turmaId];
+  const repList = reposicoes[turmaId] || [];
+  const presentes = alunos.filter(a => presencas[turmaId][a] === 'presente').length
+    + repList.filter(r => r.presente).length;
+  const total = alunos.length + repList.length;
+  const el = document.getElementById('count-' + turmaId);
+  if (el) el.textContent = total + ' aluno' + (total !== 1 ? 's' : '') + (presentes > 0 ? ` · ${presentes} presentes` : '');
+}
+
+function updateSummary(turmaId) {
+  const alunos = turmas[turmaId];
+  const repList = reposicoes[turmaId] || [];
+  const presentes = alunos.filter(a => presencas[turmaId][a] === 'presente');
+  const faltaram = alunos.filter(a => presencas[turmaId][a] === 'faltou');
+  const repPresentes = repList.filter(r => r.presente).map(r => r.nome + ' ↩');
+  const el = document.getElementById('summary-' + turmaId);
+  if (!el) return;
+  const allPresentes = [...presentes, ...repPresentes];
+  if (allPresentes.length === 0 && faltaram.length === 0) { el.textContent = ''; return; }
+  let txt = '';
+  if (allPresentes.length) txt += `✓ ${allPresentes.join(', ')}`;
+  if (faltaram.length) txt += (txt ? '  ·  ' : '') + `✗ ${faltaram.join(', ')}`;
+  el.textContent = txt;
+}
+
+function updateOverview() {
+  const visibleDay = document.querySelector('.week-btn.active').getAttribute('onclick').match(/'([^']+)'/)[1];
+  let totalTurmas = 0, totalAlunos = 0, totalPresentes = 0, totalHoras = 0;
+  const horas = {
+    'turma-seg-manha': 3, 'turma-seg-noite': 3,
+    'turma-ter-tarde': 3, 'turma-ter-noite': 3,
+    'turma-qua-manha': 3, 'turma-qua-tarde': 3, 'turma-qua-noite': 3,
+    'turma-qui-tarde': 3,
+  };
+  const dayMap = {
+    'seg': ['turma-seg-manha','turma-seg-noite'],
+    'ter': ['turma-ter-tarde','turma-ter-noite'],
+    'qua': ['turma-qua-manha','turma-qua-tarde','turma-qua-noite'],
+    'qui': ['turma-qui-tarde'],
+    'all': Object.keys(turmas),
+  };
+  const ids = dayMap[visibleDay] || Object.keys(turmas);
+  ids.forEach(id => {
+    if (!turmas[id]) return;
+    totalTurmas++;
+    totalAlunos += turmas[id].length + (reposicoes[id] || []).length;
+    totalPresentes += turmas[id].filter(a => presencas[id] && presencas[id][a] === 'presente').length
+      + (reposicoes[id] || []).filter(r => r.presente).length;
+    totalHoras += horas[id] || 3;
+  });
+  document.getElementById('ov-turmas').textContent = totalTurmas;
+  document.getElementById('ov-alunos').textContent = totalAlunos;
+  document.getElementById('ov-presentes').textContent = totalPresentes;
+  document.getElementById('ov-aulas').textContent = totalHoras + 'h';
+}
+
+function toggleTurma(id) {
+  document.getElementById(id).classList.toggle('open');
+}
+
+// --- EXPORTAÇÃO ---
+const nomesTurmas = {
+  'turma-seg-manha': 'Segunda 9h–12h (Prof. Malu)',
+  'turma-seg-noite': 'Segunda 19h–22h (Prof. Marina)',
+  'turma-ter-tarde': 'Terça 14h–17h (Prof. Malu)',
+  'turma-ter-noite': 'Terça 19h–22h (Prof. Malu)',
+  'turma-qua-manha': 'Quarta 9h–12h (Prof. Malu)',
+  'turma-qua-tarde': 'Quarta 14h–17h (Prof. Malu)',
+  'turma-qua-noite': 'Quarta 19h–22h (Prof. Mariana)',
+  'turma-qui-tarde': 'Quinta 14h–17h (Prof. Malu)',
+};
+
+function gerarTexto() {
+  const hoje = new Date();
+  const dd = String(hoje.getDate()).padStart(2,'0');
+  const mm = String(hoje.getMonth()+1).padStart(2,'0');
+  const diasSemana = ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'];
+  const diaNome = diasSemana[hoje.getDay()];
+
+  let txt = `🏺 Ateliê Malu Serra\n📅 ${diaNome}, ${dd}/${mm}\n\n`;
+
+  const visibleDay = document.querySelector('.week-btn.active').getAttribute('onclick').match(/'([^']+)'/)[1];
+  const dayMap = {
+    'seg': ['turma-seg-manha','turma-seg-noite'],
+    'ter': ['turma-ter-tarde','turma-ter-noite'],
+    'qua': ['turma-qua-manha','turma-qua-tarde','turma-qua-noite'],
+    'qui': ['turma-qui-tarde'],
+    'all': Object.keys(turmas),
+  };
+  const ids = dayMap[visibleDay] || Object.keys(turmas);
+
+  ids.forEach(id => {
+    const alunos = turmas[id];
+    const repList = reposicoes[id] || [];
+    const presentes = alunos.filter(a => presencas[id][a] === 'presente');
+    const faltaram = alunos.filter(a => presencas[id][a] === 'faltou');
+    const repPresentes = repList.filter(r => r.presente).map(r => r.nome + ' ↩');
+    const todosPresentes = [...presentes, ...repPresentes];
+    const nota = document.getElementById('nota-' + id)?.value?.trim();
+
+    // só inclui turmas que tenham algum dado marcado
+    if (todosPresentes.length === 0 && faltaram.length === 0 && !nota) return;
+
+    txt += `▸ ${nomesTurmas[id]}\n`;
+    if (todosPresentes.length) txt += `  ✓ ${todosPresentes.join(', ')}\n`;
+    if (faltaram.length) txt += `  ✗ Faltaram: ${faltaram.join(', ')}\n`;
+    if (nota) txt += `  📝 ${nota}\n`;
+    txt += '\n';
+  });
+
+  if (txt.split('\n').length <= 4) txt += '(nenhuma presença marcada ainda)';
+  return txt.trim();
+}
+
+function abrirExport() {
+  document.getElementById('modal-content').textContent = gerarTexto();
+  document.getElementById('modal-export').classList.add('open');
+}
+
+function fecharModal() {
+  document.getElementById('modal-export').classList.remove('open');
+}
+
+function fecharModalFora(e) {
+  if (e.target === document.getElementById('modal-export')) fecharModal();
+}
+
+function copiarTexto() {
+  const txt = document.getElementById('modal-content').textContent;
+  navigator.clipboard.writeText(txt).then(() => {
+    const btn = document.querySelector('.modal-btn.primary');
+    btn.textContent = '✓ Copiado!';
+    setTimeout(() => btn.textContent = '📋 Copiar', 2000);
+  });
+}
+
+function compartilhar() {
+  const txt = document.getElementById('modal-content').textContent;
+  if (navigator.share) {
+    navigator.share({ text: txt });
+  } else {
+    copiarTexto();
+  }
+}
+
+function showDay(day) {
+  document.querySelectorAll('.week-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  document.querySelectorAll('.day-section').forEach(s => {
+    if (day === 'all' || s.dataset.day === day) {
+      s.classList.add('visible');
+    } else {
+      s.classList.remove('visible');
+    }
+  });
+  updateOverview();
+}
+
+buildTurmas();
+setDates();
+</script>
+</body>
+</html>
