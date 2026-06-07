@@ -17,499 +17,322 @@
     --medium: #6B5B4E;
     --light: #D4C4B0;
   }
-
   * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--warm-white);
-    color: var(--dark);
-    min-height: 100vh;
-  }
+  body { font-family: 'DM Sans', sans-serif; background: var(--warm-white); color: var(--dark); min-height: 100vh; }
 
   header {
     background: var(--dark);
-    padding: 28px 32px 22px;
+    padding: 20px 20px 16px;
+  }
+  .header-top {
     display: flex;
     align-items: baseline;
-    gap: 12px;
+    gap: 10px;
     flex-wrap: wrap;
+    margin-bottom: 14px;
   }
+  header h1 { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--cream); letter-spacing: 0.02em; }
+  header .subtitle { font-family: 'Playfair Display', serif; font-style: italic; color: var(--terracota); font-size: 0.95rem; }
 
-  header h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.6rem;
-    color: var(--cream);
-    letter-spacing: 0.02em;
+  .nav-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
   }
-
-  header span {
+  .nav-arrow {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: rgba(255,255,255,0.8);
+    border-radius: 8px;
+    width: 34px; height: 34px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; font-size: 1rem;
+    transition: background 0.15s;
+    flex-shrink: 0;
+  }
+  .nav-arrow:hover { background: rgba(255,255,255,0.2); }
+  .nav-label {
+    flex: 1;
+    text-align: center;
     font-family: 'Playfair Display', serif;
-    font-style: italic;
-    color: var(--terracota);
     font-size: 1rem;
+    color: var(--cream);
+    letter-spacing: 0.03em;
+  }
+  .nav-label small {
+    display: block;
+    font-family: 'DM Sans', sans-serif;
+    font-style: normal;
+    font-size: 0.7rem;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-top: 1px;
   }
 
   .week-bar {
     background: var(--rust);
     display: flex;
     justify-content: center;
-    gap: 6px;
-    padding: 10px 16px;
+    gap: 5px;
+    padding: 8px 12px;
     flex-wrap: wrap;
   }
-
   .week-btn {
     background: transparent;
     border: 1.5px solid rgba(255,255,255,0.35);
     color: rgba(255,255,255,0.75);
     font-family: 'DM Sans', sans-serif;
-    font-size: 0.78rem;
+    font-size: 0.75rem;
     font-weight: 500;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
-    padding: 6px 14px;
+    padding: 5px 12px;
     border-radius: 20px;
     cursor: pointer;
     transition: all 0.2s;
   }
+  .week-btn:hover { background: rgba(255,255,255,0.15); color: white; }
+  .week-btn.active { background: var(--cream); color: var(--rust); border-color: var(--cream); font-weight: 600; }
 
-  .week-btn:hover {
-    background: rgba(255,255,255,0.15);
-    color: white;
-  }
+  .main { max-width: 860px; margin: 0 auto; padding: 20px 16px 60px; }
 
-  .week-btn.active {
-    background: var(--cream);
-    color: var(--rust);
-    border-color: var(--cream);
-    font-weight: 600;
-  }
+  .day-section { margin-bottom: 32px; display: none; }
+  .day-section.visible { display: block; }
 
-  .main {
-    max-width: 860px;
-    margin: 0 auto;
-    padding: 28px 20px 60px;
-  }
-
-  .day-section {
-    margin-bottom: 36px;
-    display: none;
-  }
-
-  .day-section.visible {
-    display: block;
-  }
-
-  .day-header {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    margin-bottom: 16px;
-  }
-
-  .day-label {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.3rem;
-    color: var(--dark);
-  }
-
+  .day-header { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+  .day-label { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--dark); }
   .day-date {
-    font-size: 0.78rem;
-    color: var(--medium);
-    font-weight: 400;
-    letter-spacing: 0.04em;
-    background: var(--cream);
-    border: 1px solid var(--light);
-    border-radius: 6px;
-    padding: 3px 9px;
+    font-size: 0.75rem; color: var(--medium); font-weight: 400;
+    letter-spacing: 0.04em; background: var(--cream); border: 1px solid var(--light);
+    border-radius: 6px; padding: 3px 8px;
   }
-
-  .day-date.hoje {
-    background: var(--rust);
-    border-color: var(--rust);
-    color: white;
-    font-weight: 500;
-  }
-
-  .day-line {
-    flex: 1;
-    height: 1px;
-    background: var(--light);
-  }
+  .day-date.hoje { background: var(--rust); border-color: var(--rust); color: white; font-weight: 500; }
+  .day-line { flex: 1; height: 1px; background: var(--light); }
 
   .turma-card {
-    background: white;
-    border-radius: 12px;
-    border: 1px solid var(--light);
-    margin-bottom: 14px;
-    overflow: hidden;
-    box-shadow: 0 2px 8px rgba(44,34,24,0.06);
-    transition: box-shadow 0.2s;
+    background: white; border-radius: 12px; border: 1px solid var(--light);
+    margin-bottom: 12px; overflow: hidden;
+    box-shadow: 0 2px 8px rgba(44,34,24,0.06); transition: box-shadow 0.2s;
   }
-
-  .turma-card:hover {
-    box-shadow: 0 4px 16px rgba(44,34,24,0.1);
-  }
-
-  .turma-top {
-    display: flex;
-    align-items: center;
-    padding: 14px 18px;
-    gap: 14px;
-    cursor: pointer;
-    user-select: none;
-  }
-
+  .turma-card:hover { box-shadow: 0 4px 16px rgba(44,34,24,0.1); }
+  .turma-top { display: flex; align-items: center; padding: 12px 16px; gap: 12px; cursor: pointer; user-select: none; }
   .horario-badge {
-    background: var(--cream);
-    border: 1px solid var(--light);
-    border-radius: 8px;
-    padding: 6px 12px;
-    font-size: 0.82rem;
-    font-weight: 500;
-    color: var(--rust);
-    white-space: nowrap;
-    min-width: 110px;
-    text-align: center;
+    background: var(--cream); border: 1px solid var(--light); border-radius: 8px;
+    padding: 5px 10px; font-size: 0.8rem; font-weight: 500; color: var(--rust);
+    white-space: nowrap; min-width: 100px; text-align: center;
   }
+  .turma-info { flex: 1; }
+  .prof-tag { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--medium); margin-bottom: 2px; }
+  .turma-count { font-size: 0.8rem; color: var(--olive); font-weight: 500; }
+  .chevron { color: var(--light); font-size: 0.9rem; transition: transform 0.2s; }
+  .turma-card.open .chevron { transform: rotate(180deg); }
+  .turma-body { display: none; padding: 0 16px 16px; border-top: 1px solid var(--cream); }
+  .turma-card.open .turma-body { display: block; }
 
-  .turma-info {
-    flex: 1;
-  }
-
-  .prof-tag {
-    font-size: 0.72rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--medium);
-    margin-bottom: 2px;
-  }
-
-  .turma-count {
-    font-size: 0.82rem;
-    color: var(--olive);
-    font-weight: 500;
-  }
-
-  .chevron {
-    color: var(--light);
-    font-size: 1rem;
-    transition: transform 0.2s;
-  }
-
-  .turma-card.open .chevron {
-    transform: rotate(180deg);
-  }
-
-  .turma-body {
-    display: none;
-    padding: 0 18px 18px;
-    border-top: 1px solid var(--cream);
-  }
-
-  .turma-card.open .turma-body {
-    display: block;
-  }
-
-  .alunos-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-    gap: 8px;
-    margin-top: 14px;
-  }
-
+  .alunos-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 7px; margin-top: 12px; }
   .aluno-chip {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background: var(--warm-white);
-    border: 1px solid var(--light);
-    border-radius: 8px;
-    padding: 8px 11px;
-    cursor: pointer;
-    transition: all 0.15s;
+    display: flex; align-items: center; gap: 7px;
+    background: var(--warm-white); border: 1px solid var(--light);
+    border-radius: 8px; padding: 7px 10px; cursor: pointer; transition: all 0.15s;
   }
-
-  .aluno-chip:hover {
-    border-color: var(--terracota);
-  }
-
-  .aluno-chip.presente {
-    background: #EEF5E8;
-    border-color: var(--olive);
-  }
-
-  .aluno-chip.faltou {
-    background: #FFF0EC;
-    border-color: #E08060;
-    opacity: 0.75;
-  }
-
-  .aluno-dot {
-    width: 9px;
-    height: 9px;
-    border-radius: 50%;
-    background: var(--light);
-    flex-shrink: 0;
-    transition: background 0.15s;
-  }
-
+  .aluno-chip:hover { border-color: var(--terracota); }
+  .aluno-chip.presente { background: #EEF5E8; border-color: var(--olive); }
+  .aluno-chip.faltou { background: #FFF0EC; border-color: #E08060; opacity: 0.75; }
+  .aluno-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--light); flex-shrink: 0; transition: background 0.15s; }
   .aluno-chip.presente .aluno-dot { background: var(--olive); }
   .aluno-chip.faltou .aluno-dot { background: #E08060; }
+  .aluno-nome { font-size: 0.8rem; color: var(--dark); font-weight: 400; line-height: 1.2; }
 
-  .aluno-nome {
-    font-size: 0.82rem;
-    color: var(--dark);
-    font-weight: 400;
-    line-height: 1.2;
-  }
-
-  .presenca-actions {
-    display: flex;
-    gap: 8px;
-    margin-top: 14px;
-    flex-wrap: wrap;
-  }
-
+  .presenca-actions { display: flex; gap: 7px; margin-top: 12px; flex-wrap: wrap; }
   .btn-small {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.75rem;
-    padding: 5px 12px;
-    border-radius: 6px;
-    border: 1.5px solid var(--light);
-    background: white;
-    color: var(--medium);
-    cursor: pointer;
-    transition: all 0.15s;
+    font-family: 'DM Sans', sans-serif; font-size: 0.73rem; padding: 5px 11px;
+    border-radius: 6px; border: 1.5px solid var(--light); background: white;
+    color: var(--medium); cursor: pointer; transition: all 0.15s;
   }
-
   .btn-small:hover { border-color: var(--rust); color: var(--rust); }
-
   .btn-small.olive { border-color: var(--olive); color: var(--olive); }
   .btn-small.olive:hover { background: var(--olive); color: white; }
 
-  .reposicao-row {
-    display: flex;
-    gap: 7px;
-    margin-top: 10px;
-    align-items: center;
-  }
-
+  .reposicao-row { display: flex; gap: 7px; margin-top: 10px; align-items: center; }
   .reposicao-input {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.8rem;
-    flex: 1;
-    padding: 6px 11px;
-    border: 1.5px dashed var(--light);
-    border-radius: 8px;
-    background: var(--warm-white);
-    color: var(--dark);
-    outline: none;
-    transition: border-color 0.15s;
+    font-family: 'DM Sans', sans-serif; font-size: 0.8rem; flex: 1;
+    padding: 6px 10px; border: 1.5px dashed var(--light); border-radius: 8px;
+    background: var(--warm-white); color: var(--dark); outline: none; transition: border-color 0.15s;
   }
-
   .reposicao-input:focus { border-color: var(--mustard); }
   .reposicao-input::placeholder { color: var(--light); }
-
   .btn-add {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.8rem;
-    padding: 6px 12px;
-    border-radius: 8px;
-    border: 1.5px solid var(--mustard);
-    background: white;
-    color: var(--mustard);
-    cursor: pointer;
-    transition: all 0.15s;
-    white-space: nowrap;
+    font-family: 'DM Sans', sans-serif; font-size: 0.78rem; padding: 6px 11px;
+    border-radius: 8px; border: 1.5px solid var(--mustard); background: white;
+    color: var(--mustard); cursor: pointer; transition: all 0.15s; white-space: nowrap;
   }
-
   .btn-add:hover { background: var(--mustard); color: white; }
 
-  .aluno-chip.reposicao {
-    border-style: dashed;
-    border-color: var(--mustard);
-    background: #FDF8EC;
-  }
-
+  .aluno-chip.reposicao { border-style: dashed; border-color: var(--mustard); background: #FDF8EC; }
   .aluno-chip.reposicao .aluno-dot { background: var(--mustard); }
+  .repo-badge { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--mustard); font-weight: 600; }
 
-  .repo-badge {
-    font-size: 0.62rem;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--mustard);
-    font-weight: 600;
-  }
+  .presenca-summary { font-size: 0.73rem; color: var(--medium); margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--cream); }
 
-  .presenca-summary {
-    font-size: 0.75rem;
-    color: var(--medium);
-    margin-top: 10px;
-    padding-top: 10px;
-    border-top: 1px solid var(--cream);
-  }
-
-  .nota-area {
-    margin-top: 10px;
-  }
-
+  .nota-area { margin-top: 10px; }
   .nota-area textarea {
-    width: 100%;
-    min-height: 60px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.8rem;
-    color: var(--dark);
-    background: var(--warm-white);
-    border: 1px solid var(--light);
-    border-radius: 8px;
-    padding: 8px 11px;
-    resize: vertical;
-    outline: none;
-    transition: border-color 0.15s;
+    width: 100%; min-height: 56px;
+    font-family: 'DM Sans', sans-serif; font-size: 0.8rem; color: var(--dark);
+    background: var(--warm-white); border: 1px solid var(--light);
+    border-radius: 8px; padding: 8px 10px; resize: vertical; outline: none; transition: border-color 0.15s;
   }
-
   .nota-area textarea:focus { border-color: var(--terracota); }
   .nota-area textarea::placeholder { color: var(--light); }
-
-  .nota-label {
-    font-size: 0.72rem;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--medium);
-    margin-bottom: 6px;
-  }
+  .nota-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--medium); margin-bottom: 5px; }
 
   .overview-bar {
-    background: var(--cream);
-    border: 1px solid var(--light);
-    border-radius: 10px;
-    padding: 14px 18px;
-    margin-bottom: 28px;
-    display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
-    align-items: center;
+    background: var(--cream); border: 1px solid var(--light); border-radius: 10px;
+    padding: 12px 16px; margin-bottom: 20px; display: flex; gap: 16px; flex-wrap: wrap; align-items: center;
   }
-
   .ov-item { text-align: center; }
-  .ov-num { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--rust); }
-  .ov-lbl { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--medium); }
+  .ov-num { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--rust); }
+  .ov-lbl { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--medium); }
+
+  .export-btn {
+    display: block; width: 100%; margin-bottom: 18px;
+    font-family: 'DM Sans', sans-serif; font-size: 0.83rem; font-weight: 500;
+    padding: 11px 16px; border-radius: 10px; border: 1.5px solid var(--rust);
+    background: white; color: var(--rust); cursor: pointer; text-align: center;
+    transition: all 0.2s; letter-spacing: 0.03em;
+  }
+  .export-btn:hover { background: var(--rust); color: white; }
+
+  /* histórico de meses */
+  .hist-btn {
+    display: block; width: 100%; margin-bottom: 18px;
+    font-family: 'DM Sans', sans-serif; font-size: 0.83rem; font-weight: 500;
+    padding: 11px 16px; border-radius: 10px; border: 1.5px solid var(--light);
+    background: white; color: var(--medium); cursor: pointer; text-align: center;
+    transition: all 0.2s;
+  }
+  .hist-btn:hover { border-color: var(--medium); color: var(--dark); }
+
+  /* Modal */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(44,34,24,0.55); z-index: 100;
+    align-items: flex-end; justify-content: center;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal-box {
+    background: white; border-radius: 18px 18px 0 0;
+    padding: 22px 18px 34px; width: 100%; max-width: 600px;
+    max-height: 85vh; overflow-y: auto;
+  }
+  .modal-title { font-family: 'Playfair Display', serif; font-size: 1.05rem; color: var(--dark); margin-bottom: 12px; }
+  .modal-text {
+    font-family: 'DM Sans', sans-serif; font-size: 0.78rem; color: var(--dark);
+    background: var(--warm-white); border: 1px solid var(--light); border-radius: 10px;
+    padding: 12px; white-space: pre-wrap; line-height: 1.7; margin-bottom: 12px;
+  }
+  .modal-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+  .modal-btn {
+    font-family: 'DM Sans', sans-serif; font-size: 0.8rem; padding: 9px 16px;
+    border-radius: 8px; cursor: pointer; transition: all 0.15s;
+    border: 1.5px solid var(--light); background: white; color: var(--medium);
+  }
+  .modal-btn.primary { background: var(--rust); color: white; border-color: var(--rust); }
+  .modal-btn:hover { opacity: 0.85; }
+
+  /* Histórico modal */
+  .hist-mes-item {
+    border: 1px solid var(--light); border-radius: 10px; margin-bottom: 10px; overflow: hidden;
+  }
+  .hist-mes-header {
+    background: var(--cream); padding: 10px 14px; cursor: pointer;
+    display: flex; align-items: center; justify-content: space-between;
+    font-family: 'Playfair Display', serif; font-size: 0.95rem; color: var(--dark);
+  }
+  .hist-mes-body { display: none; padding: 10px 14px; }
+  .hist-mes-item.open .hist-mes-body { display: block; }
+  .hist-semana-item { margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px solid var(--cream); }
+  .hist-semana-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .hist-semana-label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.07em; color: var(--rust); font-weight: 600; margin-bottom: 4px; }
+  .hist-semana-text { font-size: 0.75rem; color: var(--medium); white-space: pre-wrap; line-height: 1.6; }
+  .hist-empty { font-size: 0.8rem; color: var(--light); font-style: italic; text-align: center; padding: 20px 0; }
 
   @media (max-width: 500px) {
     .alunos-grid { grid-template-columns: 1fr 1fr; }
     header h1 { font-size: 1.2rem; }
   }
-
-  .export-btn {
-    display: block;
-    width: 100%;
-    margin-bottom: 20px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.85rem;
-    font-weight: 500;
-    padding: 12px 18px;
-    border-radius: 10px;
-    border: 1.5px solid var(--rust);
-    background: white;
-    color: var(--rust);
-    cursor: pointer;
-    text-align: center;
-    transition: all 0.2s;
-    letter-spacing: 0.03em;
-  }
-  .export-btn:hover { background: var(--rust); color: white; }
-
-  /* Modal */
-  .modal-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(44,34,24,0.55);
-    z-index: 100;
-    align-items: flex-end;
-    justify-content: center;
-  }
-  .modal-overlay.open { display: flex; }
-  .modal-box {
-    background: white;
-    border-radius: 18px 18px 0 0;
-    padding: 24px 20px 36px;
-    width: 100%;
-    max-width: 600px;
-    max-height: 80vh;
-    overflow-y: auto;
-  }
-  .modal-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.1rem;
-    color: var(--dark);
-    margin-bottom: 14px;
-  }
-  .modal-text {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.8rem;
-    color: var(--dark);
-    background: var(--warm-white);
-    border: 1px solid var(--light);
-    border-radius: 10px;
-    padding: 14px;
-    white-space: pre-wrap;
-    line-height: 1.7;
-    margin-bottom: 14px;
-  }
-  .modal-actions { display: flex; gap: 10px; flex-wrap: wrap; }
-  .modal-btn {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.82rem;
-    padding: 10px 18px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.15s;
-    border: 1.5px solid var(--light);
-    background: white;
-    color: var(--medium);
-  }
-  .modal-btn.primary { background: var(--rust); color: white; border-color: var(--rust); }
-  .modal-btn:hover { opacity: 0.85; }
 </style>
 </head>
 <body>
 
 <header>
-  <h1>Ateliê Malu Serra</h1>
-  <span>agenda de aulas</span>
+  <div class="header-top">
+    <h1>Ateliê Malu Serra</h1>
+    <span class="subtitle">agenda de aulas</span>
+  </div>
+  <div class="nav-row">
+    <button class="nav-arrow" onclick="navMes(-1)">‹</button>
+    <div class="nav-label">
+      <span id="nav-mes-label"></span>
+      <small id="nav-semana-label"></small>
+    </div>
+    <button class="nav-arrow" onclick="navMes(1)">›</button>
+  </div>
+  <div style="height:10px;"></div>
+  <div class="nav-row">
+    <button class="nav-arrow" onclick="navSemana(-1)">‹</button>
+    <div class="nav-label" style="font-family:'DM Sans',sans-serif;font-size:0.85rem;color:rgba(255,255,255,0.7)">
+      <span id="nav-semana-dates"></span>
+    </div>
+    <button class="nav-arrow" onclick="navSemana(1)">›</button>
+  </div>
 </header>
 
 <div class="week-bar">
-  <button class="week-btn active" onclick="showDay('all')">Semana toda</button>
-  <button class="week-btn" onclick="showDay('seg')">Segunda</button>
-  <button class="week-btn" onclick="showDay('ter')">Terça</button>
-  <button class="week-btn" onclick="showDay('qua')">Quarta</button>
-  <button class="week-btn" onclick="showDay('qui')">Quinta</button>
+  <button class="week-btn active" data-day="all" onclick="showDay('all',this)">Semana toda</button>
+  <button class="week-btn" data-day="seg" onclick="showDay('seg',this)">Segunda</button>
+  <button class="week-btn" data-day="ter" onclick="showDay('ter',this)">Terça</button>
+  <button class="week-btn" data-day="qua" onclick="showDay('qua',this)">Quarta</button>
+  <button class="week-btn" data-day="qui" onclick="showDay('qui',this)">Quinta</button>
 </div>
 
 <div class="main">
 
-  <div class="overview-bar" id="overview">
+  <div class="overview-bar">
     <div class="ov-item"><div class="ov-num" id="ov-turmas">0</div><div class="ov-lbl">turmas</div></div>
     <div class="ov-item"><div class="ov-num" id="ov-alunos">0</div><div class="ov-lbl">alunos</div></div>
     <div class="ov-item"><div class="ov-num" id="ov-presentes">0</div><div class="ov-lbl">presentes</div></div>
     <div class="ov-item"><div class="ov-num" id="ov-aulas">0</div><div class="ov-lbl">horas de aula</div></div>
   </div>
 
-  <button class="export-btn" onclick="abrirExport()">📋 Gerar resumo do dia para WhatsApp</button>
+  <button class="export-btn" onclick="abrirExport()">📋 Gerar resumo para WhatsApp</button>
+  <button class="hist-btn" onclick="abrirHistorico()">📂 Ver histórico de meses</button>
+  <div style="display:flex;gap:8px;margin-bottom:18px">
+    <button class="hist-btn" style="margin-bottom:0;flex:1" onclick="exportarBackup()">⬇ Baixar backup</button>
+    <button class="hist-btn" style="margin-bottom:0;flex:1" onclick="document.getElementById('input-restore').click()">⬆ Restaurar backup</button>
+    <input type="file" id="input-restore" accept=".json" style="display:none" onchange="importarBackup(event)">
+  </div>
 
-  <!-- Modal de exportação -->
-  <div class="modal-overlay" id="modal-export" onclick="fecharModalFora(event)">
+  <!-- Modal export -->
+  <div class="modal-overlay" id="modal-export" onclick="fecharModalFora(event,'modal-export')">
     <div class="modal-box">
       <div class="modal-title">Resumo de presenças</div>
       <div class="modal-text" id="modal-content"></div>
       <div class="modal-actions">
         <button class="modal-btn primary" onclick="copiarTexto()">📋 Copiar</button>
         <button class="modal-btn" onclick="compartilhar()">↗ Compartilhar</button>
-        <button class="modal-btn" onclick="fecharModal()">Fechar</button>
+        <button class="modal-btn" onclick="fecharModal('modal-export')">Fechar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal histórico -->
+  <div class="modal-overlay" id="modal-hist" onclick="fecharModalFora(event,'modal-hist')">
+    <div class="modal-box">
+      <div class="modal-title">Histórico de registros</div>
+      <div id="hist-content"></div>
+      <div class="modal-actions" style="margin-top:12px">
+        <button class="modal-btn" onclick="fecharModal('modal-hist')">Fechar</button>
       </div>
     </div>
   </div>
@@ -521,50 +344,36 @@
       <span class="day-date" id="date-seg"></span>
       <div class="day-line"></div>
     </div>
-
     <div class="turma-card" id="turma-seg-manha">
       <div class="turma-top" onclick="toggleTurma('turma-seg-manha')">
         <div class="horario-badge">9h – 12h</div>
-        <div class="turma-info">
-          <div class="prof-tag">Prof. Malu</div>
-          <div class="turma-count" id="count-turma-seg-manha"></div>
-        </div>
+        <div class="turma-info"><div class="prof-tag">Prof. Malu</div><div class="turma-count" id="count-turma-seg-manha"></div></div>
         <div class="chevron">▼</div>
       </div>
       <div class="turma-body">
         <div class="alunos-grid" id="alunos-turma-seg-manha"></div>
         <div class="presenca-actions">
-          <button class="btn-small olive" onclick="marcarTodos('turma-seg-manha', 'presente')">✓ Todos presentes</button>
-          <button class="btn-small" onclick="marcarTodos('turma-seg-manha', '')">Limpar</button>
+          <button class="btn-small olive" onclick="marcarTodos('turma-seg-manha','presente')">✓ Todos presentes</button>
+          <button class="btn-small" onclick="marcarTodos('turma-seg-manha','')">Limpar</button>
         </div>
         <div class="presenca-summary" id="summary-turma-seg-manha"></div>
-        <div class="nota-area">
-          <div class="nota-label">Anotações da aula</div>
-          <textarea placeholder="O que foi trabalhado hoje, observações sobre alunos…" id="nota-turma-seg-manha"></textarea>
-        </div>
+        <div class="nota-area"><div class="nota-label">Anotações da aula</div><textarea placeholder="O que foi trabalhado hoje…" id="nota-turma-seg-manha" oninput="salvarDados()"></textarea></div>
       </div>
     </div>
-
     <div class="turma-card" id="turma-seg-noite">
       <div class="turma-top" onclick="toggleTurma('turma-seg-noite')">
         <div class="horario-badge">19h – 22h</div>
-        <div class="turma-info">
-          <div class="prof-tag">Prof. Marina</div>
-          <div class="turma-count" id="count-turma-seg-noite"></div>
-        </div>
+        <div class="turma-info"><div class="prof-tag">Prof. Marina</div><div class="turma-count" id="count-turma-seg-noite"></div></div>
         <div class="chevron">▼</div>
       </div>
       <div class="turma-body">
         <div class="alunos-grid" id="alunos-turma-seg-noite"></div>
         <div class="presenca-actions">
-          <button class="btn-small olive" onclick="marcarTodos('turma-seg-noite', 'presente')">✓ Todos presentes</button>
-          <button class="btn-small" onclick="marcarTodos('turma-seg-noite', '')">Limpar</button>
+          <button class="btn-small olive" onclick="marcarTodos('turma-seg-noite','presente')">✓ Todos presentes</button>
+          <button class="btn-small" onclick="marcarTodos('turma-seg-noite','')">Limpar</button>
         </div>
         <div class="presenca-summary" id="summary-turma-seg-noite"></div>
-        <div class="nota-area">
-          <div class="nota-label">Anotações da aula</div>
-          <textarea placeholder="O que foi trabalhado hoje, observações…" id="nota-turma-seg-noite"></textarea>
-        </div>
+        <div class="nota-area"><div class="nota-label">Anotações da aula</div><textarea placeholder="Observações…" id="nota-turma-seg-noite" oninput="salvarDados()"></textarea></div>
       </div>
     </div>
   </div>
@@ -576,50 +385,36 @@
       <span class="day-date" id="date-ter"></span>
       <div class="day-line"></div>
     </div>
-
     <div class="turma-card" id="turma-ter-tarde">
       <div class="turma-top" onclick="toggleTurma('turma-ter-tarde')">
         <div class="horario-badge">14h – 17h</div>
-        <div class="turma-info">
-          <div class="prof-tag">Prof. Malu</div>
-          <div class="turma-count" id="count-turma-ter-tarde"></div>
-        </div>
+        <div class="turma-info"><div class="prof-tag">Prof. Malu</div><div class="turma-count" id="count-turma-ter-tarde"></div></div>
         <div class="chevron">▼</div>
       </div>
       <div class="turma-body">
         <div class="alunos-grid" id="alunos-turma-ter-tarde"></div>
         <div class="presenca-actions">
-          <button class="btn-small olive" onclick="marcarTodos('turma-ter-tarde', 'presente')">✓ Todos presentes</button>
-          <button class="btn-small" onclick="marcarTodos('turma-ter-tarde', '')">Limpar</button>
+          <button class="btn-small olive" onclick="marcarTodos('turma-ter-tarde','presente')">✓ Todos presentes</button>
+          <button class="btn-small" onclick="marcarTodos('turma-ter-tarde','')">Limpar</button>
         </div>
         <div class="presenca-summary" id="summary-turma-ter-tarde"></div>
-        <div class="nota-area">
-          <div class="nota-label">Anotações da aula</div>
-          <textarea placeholder="O que foi trabalhado hoje, observações…" id="nota-turma-ter-tarde"></textarea>
-        </div>
+        <div class="nota-area"><div class="nota-label">Anotações da aula</div><textarea placeholder="Observações…" id="nota-turma-ter-tarde" oninput="salvarDados()"></textarea></div>
       </div>
     </div>
-
     <div class="turma-card" id="turma-ter-noite">
       <div class="turma-top" onclick="toggleTurma('turma-ter-noite')">
         <div class="horario-badge">19h – 22h</div>
-        <div class="turma-info">
-          <div class="prof-tag">Prof. Malu</div>
-          <div class="turma-count" id="count-turma-ter-noite"></div>
-        </div>
+        <div class="turma-info"><div class="prof-tag">Prof. Malu</div><div class="turma-count" id="count-turma-ter-noite"></div></div>
         <div class="chevron">▼</div>
       </div>
       <div class="turma-body">
         <div class="alunos-grid" id="alunos-turma-ter-noite"></div>
         <div class="presenca-actions">
-          <button class="btn-small olive" onclick="marcarTodos('turma-ter-noite', 'presente')">✓ Todos presentes</button>
-          <button class="btn-small" onclick="marcarTodos('turma-ter-noite', '')">Limpar</button>
+          <button class="btn-small olive" onclick="marcarTodos('turma-ter-noite','presente')">✓ Todos presentes</button>
+          <button class="btn-small" onclick="marcarTodos('turma-ter-noite','')">Limpar</button>
         </div>
         <div class="presenca-summary" id="summary-turma-ter-noite"></div>
-        <div class="nota-area">
-          <div class="nota-label">Anotações da aula</div>
-          <textarea placeholder="O que foi trabalhado hoje, observações…" id="nota-turma-ter-noite"></textarea>
-        </div>
+        <div class="nota-area"><div class="nota-label">Anotações da aula</div><textarea placeholder="Observações…" id="nota-turma-ter-noite" oninput="salvarDados()"></textarea></div>
       </div>
     </div>
   </div>
@@ -631,73 +426,52 @@
       <span class="day-date" id="date-qua"></span>
       <div class="day-line"></div>
     </div>
-
     <div class="turma-card" id="turma-qua-manha">
       <div class="turma-top" onclick="toggleTurma('turma-qua-manha')">
         <div class="horario-badge">9h – 12h</div>
-        <div class="turma-info">
-          <div class="prof-tag">Prof. Malu</div>
-          <div class="turma-count" id="count-turma-qua-manha"></div>
-        </div>
+        <div class="turma-info"><div class="prof-tag">Prof. Malu</div><div class="turma-count" id="count-turma-qua-manha"></div></div>
         <div class="chevron">▼</div>
       </div>
       <div class="turma-body">
         <div class="alunos-grid" id="alunos-turma-qua-manha"></div>
         <div class="presenca-actions">
-          <button class="btn-small olive" onclick="marcarTodos('turma-qua-manha', 'presente')">✓ Todos presentes</button>
-          <button class="btn-small" onclick="marcarTodos('turma-qua-manha', '')">Limpar</button>
+          <button class="btn-small olive" onclick="marcarTodos('turma-qua-manha','presente')">✓ Todos presentes</button>
+          <button class="btn-small" onclick="marcarTodos('turma-qua-manha','')">Limpar</button>
         </div>
         <div class="presenca-summary" id="summary-turma-qua-manha"></div>
-        <div class="nota-area">
-          <div class="nota-label">Anotações da aula</div>
-          <textarea placeholder="O que foi trabalhado hoje, observações…" id="nota-turma-qua-manha"></textarea>
-        </div>
+        <div class="nota-area"><div class="nota-label">Anotações da aula</div><textarea placeholder="Observações…" id="nota-turma-qua-manha" oninput="salvarDados()"></textarea></div>
       </div>
     </div>
-
     <div class="turma-card" id="turma-qua-tarde">
       <div class="turma-top" onclick="toggleTurma('turma-qua-tarde')">
         <div class="horario-badge">14h – 17h</div>
-        <div class="turma-info">
-          <div class="prof-tag">Prof. Malu</div>
-          <div class="turma-count" id="count-turma-qua-tarde"></div>
-        </div>
+        <div class="turma-info"><div class="prof-tag">Prof. Malu</div><div class="turma-count" id="count-turma-qua-tarde"></div></div>
         <div class="chevron">▼</div>
       </div>
       <div class="turma-body">
         <div class="alunos-grid" id="alunos-turma-qua-tarde"></div>
         <div class="presenca-actions">
-          <button class="btn-small olive" onclick="marcarTodos('turma-qua-tarde', 'presente')">✓ Todos presentes</button>
-          <button class="btn-small" onclick="marcarTodos('turma-qua-tarde', '')">Limpar</button>
+          <button class="btn-small olive" onclick="marcarTodos('turma-qua-tarde','presente')">✓ Todos presentes</button>
+          <button class="btn-small" onclick="marcarTodos('turma-qua-tarde','')">Limpar</button>
         </div>
         <div class="presenca-summary" id="summary-turma-qua-tarde"></div>
-        <div class="nota-area">
-          <div class="nota-label">Anotações da aula</div>
-          <textarea placeholder="O que foi trabalhado hoje, observações…" id="nota-turma-qua-tarde"></textarea>
-        </div>
+        <div class="nota-area"><div class="nota-label">Anotações da aula</div><textarea placeholder="Observações…" id="nota-turma-qua-tarde" oninput="salvarDados()"></textarea></div>
       </div>
     </div>
-
     <div class="turma-card" id="turma-qua-noite">
       <div class="turma-top" onclick="toggleTurma('turma-qua-noite')">
         <div class="horario-badge">19h – 22h</div>
-        <div class="turma-info">
-          <div class="prof-tag">Prof. Mariana</div>
-          <div class="turma-count" id="count-turma-qua-noite"></div>
-        </div>
+        <div class="turma-info"><div class="prof-tag">Prof. Mariana</div><div class="turma-count" id="count-turma-qua-noite"></div></div>
         <div class="chevron">▼</div>
       </div>
       <div class="turma-body">
         <div class="alunos-grid" id="alunos-turma-qua-noite"></div>
         <div class="presenca-actions">
-          <button class="btn-small olive" onclick="marcarTodos('turma-qua-noite', 'presente')">✓ Todos presentes</button>
-          <button class="btn-small" onclick="marcarTodos('turma-qua-noite', '')">Limpar</button>
+          <button class="btn-small olive" onclick="marcarTodos('turma-qua-noite','presente')">✓ Todos presentes</button>
+          <button class="btn-small" onclick="marcarTodos('turma-qua-noite','')">Limpar</button>
         </div>
         <div class="presenca-summary" id="summary-turma-qua-noite"></div>
-        <div class="nota-area">
-          <div class="nota-label">Anotações da aula</div>
-          <textarea placeholder="O que foi trabalhado hoje, observações…" id="nota-turma-qua-noite"></textarea>
-        </div>
+        <div class="nota-area"><div class="nota-label">Anotações da aula</div><textarea placeholder="Observações…" id="nota-turma-qua-noite" oninput="salvarDados()"></textarea></div>
       </div>
     </div>
   </div>
@@ -709,35 +483,29 @@
       <span class="day-date" id="date-qui"></span>
       <div class="day-line"></div>
     </div>
-
     <div class="turma-card" id="turma-qui-tarde">
       <div class="turma-top" onclick="toggleTurma('turma-qui-tarde')">
         <div class="horario-badge">14h – 17h</div>
-        <div class="turma-info">
-          <div class="prof-tag">Prof. Malu</div>
-          <div class="turma-count" id="count-turma-qui-tarde"></div>
-        </div>
+        <div class="turma-info"><div class="prof-tag">Prof. Malu</div><div class="turma-count" id="count-turma-qui-tarde"></div></div>
         <div class="chevron">▼</div>
       </div>
       <div class="turma-body">
         <div class="alunos-grid" id="alunos-turma-qui-tarde"></div>
         <div class="presenca-actions">
-          <button class="btn-small olive" onclick="marcarTodos('turma-qui-tarde', 'presente')">✓ Todos presentes</button>
-          <button class="btn-small" onclick="marcarTodos('turma-qui-tarde', '')">Limpar</button>
+          <button class="btn-small olive" onclick="marcarTodos('turma-qui-tarde','presente')">✓ Todos presentes</button>
+          <button class="btn-small" onclick="marcarTodos('turma-qui-tarde','')">Limpar</button>
         </div>
         <div class="presenca-summary" id="summary-turma-qui-tarde"></div>
-        <div class="nota-area">
-          <div class="nota-label">Anotações da aula</div>
-          <textarea placeholder="O que foi trabalhado hoje, observações…" id="nota-turma-qui-tarde"></textarea>
-        </div>
+        <div class="nota-area"><div class="nota-label">Anotações da aula</div><textarea placeholder="Observações…" id="nota-turma-qui-tarde" oninput="salvarDados()"></textarea></div>
       </div>
     </div>
   </div>
 
-</div><!-- /main -->
+</div>
 
 <script>
-const turmas = {
+// ── CONFIGURAÇÃO ─────────────────────────────────────────────────────────────
+const TURMAS_BASE = {
   'turma-seg-manha': ['Santuza','Silvia','Taciana','Marina','Néia'],
   'turma-seg-noite': ['Carol'],
   'turma-ter-tarde': ['Luiza','Carla','Sandra','Kati','Tane'],
@@ -748,202 +516,7 @@ const turmas = {
   'turma-qui-tarde': ['Esther','Ju','Clara','Flavia'],
 };
 
-const presencas = {};
-const reposicoes = {}; // alunos extras de reposição por turma
-
-// Calcula e exibe as datas da semana atual
-function setDates() {
-  const hoje = new Date();
-  const diaSemana = hoje.getDay(); // 0=dom, 1=seg, 2=ter, 3=qua, 4=qui, 5=sex, 6=sab
-
-  // Encontra a segunda-feira desta semana
-  const seg = new Date(hoje);
-  seg.setDate(hoje.getDate() - ((diaSemana + 6) % 7));
-
-  const dias = { seg: 0, ter: 1, qua: 2, qui: 3 };
-
-  for (const [key, offset] of Object.entries(dias)) {
-    const d = new Date(seg);
-    d.setDate(seg.getDate() + offset);
-    const dd = String(d.getDate()).padStart(2, '0');
-    const mm = String(d.getMonth() + 1).padStart(2, '0');
-    const el = document.getElementById('date-' + key);
-    if (el) {
-      el.textContent = dd + '/' + mm;
-      const isHoje = d.toDateString() === hoje.toDateString();
-      if (isHoje) el.classList.add('hoje');
-    }
-  }
-}
-
-function buildTurmas() {
-  for (const [id, alunos] of Object.entries(turmas)) {
-    presencas[id] = {};
-    reposicoes[id] = [];
-    alunos.forEach(a => presencas[id][a] = '');
-    renderAlunos(id);
-    updateCount(id);
-    injectReposicaoRow(id);
-  }
-  updateOverview();
-}
-
-function injectReposicaoRow(turmaId) {
-  const body = document.querySelector(`#${turmaId} .turma-body`);
-  if (!body) return;
-  const row = document.createElement('div');
-  row.className = 'reposicao-row';
-  row.id = 'repo-row-' + turmaId;
-  row.innerHTML = `
-    <input class="reposicao-input" id="repo-input-${turmaId}" type="text" placeholder="+ Reposição — nome da aluna" />
-    <button class="btn-add" onclick="adicionarReposicao('${turmaId}')">Adicionar</button>
-  `;
-  // insere antes da nota-area
-  const nota = body.querySelector('.nota-area');
-  body.insertBefore(row, nota);
-
-  // permite Enter para confirmar
-  row.querySelector('input').addEventListener('keydown', e => {
-    if (e.key === 'Enter') adicionarReposicao(turmaId);
-  });
-}
-
-function renderAlunos(turmaId) {
-  const grid = document.getElementById('alunos-' + turmaId);
-  if (!grid) return;
-  grid.innerHTML = '';
-  // alunos fixos
-  turmas[turmaId].forEach(nome => {
-    const estado = presencas[turmaId][nome] || '';
-    const chip = document.createElement('div');
-    chip.className = 'aluno-chip' + (estado ? ' ' + estado : '');
-    chip.innerHTML = `<div class="aluno-dot"></div><div class="aluno-nome">${nome}</div>`;
-    chip.onclick = () => togglePresenca(turmaId, nome);
-    grid.appendChild(chip);
-  });
-  // reposições
-  (reposicoes[turmaId] || []).forEach((r, i) => {
-    const chip = document.createElement('div');
-    chip.className = 'aluno-chip reposicao' + (r.presente ? ' presente' : '');
-    chip.innerHTML = `
-      <div class="aluno-dot"></div>
-      <div style="flex:1">
-        <div class="aluno-nome">${r.nome}</div>
-        <div class="repo-badge">reposição</div>
-      </div>
-      <span onclick="removerReposicao('${turmaId}',${i})" style="font-size:0.75rem;color:#ccc;cursor:pointer;padding-left:4px" title="Remover">✕</span>
-    `;
-    chip.onclick = (e) => {
-      if (e.target.closest('span')) return;
-      r.presente = !r.presente;
-      renderAlunos(turmaId);
-      updateCount(turmaId);
-      updateOverview();
-    };
-    grid.appendChild(chip);
-  });
-  updateSummary(turmaId);
-}
-
-function togglePresenca(turmaId, nome) {
-  const atual = presencas[turmaId][nome];
-  if (atual === '') presencas[turmaId][nome] = 'presente';
-  else if (atual === 'presente') presencas[turmaId][nome] = 'faltou';
-  else presencas[turmaId][nome] = '';
-  renderAlunos(turmaId);
-  updateCount(turmaId);
-  updateOverview();
-}
-
-function adicionarReposicao(turmaId) {
-  const input = document.getElementById('repo-input-' + turmaId);
-  const nome = input.value.trim();
-  if (!nome) return;
-  reposicoes[turmaId].push({ nome, presente: true });
-  input.value = '';
-  renderAlunos(turmaId);
-  updateCount(turmaId);
-  updateOverview();
-}
-
-function removerReposicao(turmaId, index) {
-  reposicoes[turmaId].splice(index, 1);
-  renderAlunos(turmaId);
-  updateCount(turmaId);
-  updateOverview();
-}
-
-function marcarTodos(turmaId, estado) {
-  turmas[turmaId].forEach(nome => { presencas[turmaId][nome] = estado; });
-  (reposicoes[turmaId] || []).forEach(r => { r.presente = estado === 'presente'; });
-  renderAlunos(turmaId);
-  updateCount(turmaId);
-  updateOverview();
-}
-
-function updateCount(turmaId) {
-  const alunos = turmas[turmaId];
-  const repList = reposicoes[turmaId] || [];
-  const presentes = alunos.filter(a => presencas[turmaId][a] === 'presente').length
-    + repList.filter(r => r.presente).length;
-  const total = alunos.length + repList.length;
-  const el = document.getElementById('count-' + turmaId);
-  if (el) el.textContent = total + ' aluno' + (total !== 1 ? 's' : '') + (presentes > 0 ? ` · ${presentes} presentes` : '');
-}
-
-function updateSummary(turmaId) {
-  const alunos = turmas[turmaId];
-  const repList = reposicoes[turmaId] || [];
-  const presentes = alunos.filter(a => presencas[turmaId][a] === 'presente');
-  const faltaram = alunos.filter(a => presencas[turmaId][a] === 'faltou');
-  const repPresentes = repList.filter(r => r.presente).map(r => r.nome + ' ↩');
-  const el = document.getElementById('summary-' + turmaId);
-  if (!el) return;
-  const allPresentes = [...presentes, ...repPresentes];
-  if (allPresentes.length === 0 && faltaram.length === 0) { el.textContent = ''; return; }
-  let txt = '';
-  if (allPresentes.length) txt += `✓ ${allPresentes.join(', ')}`;
-  if (faltaram.length) txt += (txt ? '  ·  ' : '') + `✗ ${faltaram.join(', ')}`;
-  el.textContent = txt;
-}
-
-function updateOverview() {
-  const visibleDay = document.querySelector('.week-btn.active').getAttribute('onclick').match(/'([^']+)'/)[1];
-  let totalTurmas = 0, totalAlunos = 0, totalPresentes = 0, totalHoras = 0;
-  const horas = {
-    'turma-seg-manha': 3, 'turma-seg-noite': 3,
-    'turma-ter-tarde': 3, 'turma-ter-noite': 3,
-    'turma-qua-manha': 3, 'turma-qua-tarde': 3, 'turma-qua-noite': 3,
-    'turma-qui-tarde': 3,
-  };
-  const dayMap = {
-    'seg': ['turma-seg-manha','turma-seg-noite'],
-    'ter': ['turma-ter-tarde','turma-ter-noite'],
-    'qua': ['turma-qua-manha','turma-qua-tarde','turma-qua-noite'],
-    'qui': ['turma-qui-tarde'],
-    'all': Object.keys(turmas),
-  };
-  const ids = dayMap[visibleDay] || Object.keys(turmas);
-  ids.forEach(id => {
-    if (!turmas[id]) return;
-    totalTurmas++;
-    totalAlunos += turmas[id].length + (reposicoes[id] || []).length;
-    totalPresentes += turmas[id].filter(a => presencas[id] && presencas[id][a] === 'presente').length
-      + (reposicoes[id] || []).filter(r => r.presente).length;
-    totalHoras += horas[id] || 3;
-  });
-  document.getElementById('ov-turmas').textContent = totalTurmas;
-  document.getElementById('ov-alunos').textContent = totalAlunos;
-  document.getElementById('ov-presentes').textContent = totalPresentes;
-  document.getElementById('ov-aulas').textContent = totalHoras + 'h';
-}
-
-function toggleTurma(id) {
-  document.getElementById(id).classList.toggle('open');
-}
-
-// --- EXPORTAÇÃO ---
-const nomesTurmas = {
+const NOMES_TURMAS = {
   'turma-seg-manha': 'Segunda 9h–12h (Prof. Malu)',
   'turma-seg-noite': 'Segunda 19h–22h (Prof. Marina)',
   'turma-ter-tarde': 'Terça 14h–17h (Prof. Malu)',
@@ -954,44 +527,336 @@ const nomesTurmas = {
   'turma-qui-tarde': 'Quinta 14h–17h (Prof. Malu)',
 };
 
-function gerarTexto() {
-  const hoje = new Date();
-  const dd = String(hoje.getDate()).padStart(2,'0');
-  const mm = String(hoje.getMonth()+1).padStart(2,'0');
-  const diasSemana = ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'];
-  const diaNome = diasSemana[hoje.getDay()];
+const MESES_PT = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+const DIAS_PT = ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'];
+const DAY_MAP = {
+  seg: ['turma-seg-manha','turma-seg-noite'],
+  ter: ['turma-ter-tarde','turma-ter-noite'],
+  qua: ['turma-qua-manha','turma-qua-tarde','turma-qua-noite'],
+  qui: ['turma-qui-tarde'],
+  all: Object.keys(TURMAS_BASE),
+};
 
-  let txt = `🏺 Ateliê Malu Serra\n📅 ${diaNome}, ${dd}/${mm}\n\n`;
+// ── ESTADO ──────────────────────────────────────────────────────────────────
+// cursor: { ano, mes (0-11), semana (0-based dentro do mês) }
+const hoje = new Date();
+let cursor = { ano: hoje.getFullYear(), mes: hoje.getMonth(), semana: semanaDoMes(hoje) };
+let currentDay = 'all';
 
-  const visibleDay = document.querySelector('.week-btn.active').getAttribute('onclick').match(/'([^']+)'/)[1];
-  const dayMap = {
-    'seg': ['turma-seg-manha','turma-seg-noite'],
-    'ter': ['turma-ter-tarde','turma-ter-noite'],
-    'qua': ['turma-qua-manha','turma-qua-tarde','turma-qua-noite'],
-    'qui': ['turma-qui-tarde'],
-    'all': Object.keys(turmas),
-  };
-  const ids = dayMap[visibleDay] || Object.keys(turmas);
+// dados em memória para a semana visível
+let presencas = {};   // turmaId -> { nome: estado }
+let reposicoes = {};  // turmaId -> [{ nome, presente }]
 
+// ── SEMANAS ─────────────────────────────────────────────────────────────────
+// Retorna a segunda-feira da semana N (0-based) de um dado mês/ano
+function segundaFeiraDaSemana(ano, mes, semana) {
+  const d = new Date(ano, mes, 1);
+  // dia da semana da 1ª segunda do mês (0=dom)
+  const dow = d.getDay(); // 0=dom
+  // primeiro dia do mês que é segunda (offset)
+  const offset = (dow === 0) ? 1 : (8 - dow) % 7;
+  // semana 0 pode começar antes do dia 1 (última seg do mês anterior)
+  const seg = new Date(ano, mes, 1 + offset + semana * 7 - 7);
+  return seg;
+}
+
+// Quantas semanas (com pelo menos uma segunda a quinta) tem o mês
+function totalSemanasMes(ano, mes) {
+  // Contar segundas-feiras dentro do mês
+  let count = 0;
+  const d = new Date(ano, mes, 1);
+  while (d.getMonth() === mes) {
+    if (d.getDay() === 1) count++;
+    d.setDate(d.getDate() + 1);
+  }
+  return count || 1;
+}
+
+// Qual semana (0-based) pertence uma data dentro do mês
+function semanaDoMes(data) {
+  const ano = data.getFullYear(), mes = data.getMonth();
+  const d = new Date(ano, mes, 1);
+  const dow = d.getDay();
+  const offset = (dow === 0) ? 1 : (8 - dow) % 7;
+  const primeiraSeg = new Date(ano, mes, 1 + offset - 7); // pode ser mês anterior
+  const diff = Math.floor((data - primeiraSeg) / (7 * 86400000));
+  return Math.max(0, diff);
+}
+
+function segundaAtual() {
+  return segundaFeiraDaSemana(cursor.ano, cursor.mes, cursor.semana);
+}
+
+function labelSemana() {
+  const seg = segundaAtual();
+  const qui = new Date(seg); qui.setDate(seg.getDate() + 3);
+  const fmt = d => `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}`;
+  return `${fmt(seg)} – ${fmt(qui)}`;
+}
+
+// chave única para storage: "2025-05-s2"
+function storageKey() {
+  return `atelie-${cursor.ano}-${String(cursor.mes+1).padStart(2,'0')}-s${cursor.semana}`;
+}
+
+// ── STORAGE ──────────────────────────────────────────────────────────────────
+function salvarDados() {
+  const notas = {};
+  Object.keys(TURMAS_BASE).forEach(id => {
+    const el = document.getElementById('nota-' + id);
+    if (el) notas[id] = el.value;
+  });
+  const payload = { presencas, reposicoes, notas };
+  try { localStorage.setItem(storageKey(), JSON.stringify(payload)); } catch(e) {}
+}
+
+function carregarDados() {
+  try {
+    const raw = localStorage.getItem(storageKey());
+    if (raw) return JSON.parse(raw);
+  } catch(e) {}
+  return null;
+}
+
+function initDados() {
+  presencas = {}; reposicoes = {};
+  Object.keys(TURMAS_BASE).forEach(id => {
+    presencas[id] = {};
+    reposicoes[id] = [];
+    TURMAS_BASE[id].forEach(a => presencas[id][a] = '');
+  });
+  const saved = carregarDados();
+  if (saved) {
+    // merge presencas (só alunos que ainda existem na lista)
+    Object.keys(TURMAS_BASE).forEach(id => {
+      if (saved.presencas && saved.presencas[id]) {
+        TURMAS_BASE[id].forEach(a => {
+          presencas[id][a] = saved.presencas[id][a] || '';
+        });
+      }
+      if (saved.reposicoes && saved.reposicoes[id]) {
+        reposicoes[id] = saved.reposicoes[id];
+      }
+    });
+    // notas
+    if (saved.notas) {
+      Object.keys(saved.notas).forEach(id => {
+        const el = document.getElementById('nota-' + id);
+        if (el) el.value = saved.notas[id] || '';
+      });
+    }
+  }
+}
+
+// ── NAVEGAÇÃO ────────────────────────────────────────────────────────────────
+function navMes(dir) {
+  salvarDados();
+  cursor.mes += dir;
+  if (cursor.mes < 0) { cursor.mes = 11; cursor.ano--; }
+  if (cursor.mes > 11) { cursor.mes = 0; cursor.ano++; }
+  cursor.semana = 0;
+  atualizarTudo();
+}
+
+function navSemana(dir) {
+  salvarDados();
+  const total = totalSemanasMes(cursor.ano, cursor.mes);
+  cursor.semana += dir;
+  if (cursor.semana < 0) {
+    // vai para mês anterior, última semana
+    cursor.mes--;
+    if (cursor.mes < 0) { cursor.mes = 11; cursor.ano--; }
+    cursor.semana = totalSemanasMes(cursor.ano, cursor.mes) - 1;
+  } else if (cursor.semana >= total) {
+    // vai para mês seguinte, primeira semana
+    cursor.mes++;
+    if (cursor.mes > 11) { cursor.mes = 0; cursor.ano++; }
+    cursor.semana = 0;
+  }
+  atualizarTudo();
+}
+
+function atualizarTudo() {
+  // limpa inputs de notas antes de recarregar
+  Object.keys(TURMAS_BASE).forEach(id => {
+    const el = document.getElementById('nota-' + id);
+    if (el) el.value = '';
+    // limpa reposição inputs
+    const ri = document.getElementById('repo-input-' + id);
+    if (ri) ri.value = '';
+  });
+  initDados();
+  atualizarNavLabel();
+  setDates();
+  Object.keys(TURMAS_BASE).forEach(id => {
+    renderAlunos(id);
+    updateCount(id);
+  });
+  updateOverview();
+}
+
+function atualizarNavLabel() {
+  const total = totalSemanasMes(cursor.ano, cursor.mes);
+  document.getElementById('nav-mes-label').textContent = `${MESES_PT[cursor.mes]} ${cursor.ano}`;
+  document.getElementById('nav-semana-label').textContent = `semana ${cursor.semana + 1} de ${total}`;
+  document.getElementById('nav-semana-dates').textContent = labelSemana();
+}
+
+// ── DATAS NOS DIAS ───────────────────────────────────────────────────────────
+function setDates() {
+  const seg = segundaAtual();
+  const offsets = { seg: 0, ter: 1, qua: 2, qui: 3 };
+  for (const [key, off] of Object.entries(offsets)) {
+    const d = new Date(seg); d.setDate(seg.getDate() + off);
+    const el = document.getElementById('date-' + key);
+    if (!el) continue;
+    el.textContent = `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}`;
+    el.classList.toggle('hoje', d.toDateString() === hoje.toDateString());
+  }
+}
+
+// ── RENDER ALUNOS ────────────────────────────────────────────────────────────
+function renderAlunos(turmaId) {
+  const grid = document.getElementById('alunos-' + turmaId);
+  if (!grid) return;
+  grid.innerHTML = '';
+  TURMAS_BASE[turmaId].forEach(nome => {
+    const estado = presencas[turmaId][nome] || '';
+    const chip = document.createElement('div');
+    chip.className = 'aluno-chip' + (estado ? ' ' + estado : '');
+    chip.innerHTML = `<div class="aluno-dot"></div><div class="aluno-nome">${nome}</div>`;
+    chip.onclick = () => togglePresenca(turmaId, nome);
+    grid.appendChild(chip);
+  });
+  (reposicoes[turmaId] || []).forEach((r, i) => {
+    const chip = document.createElement('div');
+    chip.className = 'aluno-chip reposicao' + (r.presente ? ' presente' : '');
+    chip.innerHTML = `
+      <div class="aluno-dot"></div>
+      <div style="flex:1"><div class="aluno-nome">${r.nome}</div><div class="repo-badge">reposição</div></div>
+      <span onclick="removerReposicao('${turmaId}',${i})" style="font-size:0.75rem;color:#ccc;cursor:pointer;padding-left:4px">✕</span>`;
+    chip.onclick = e => {
+      if (e.target.closest('span')) return;
+      r.presente = !r.presente;
+      renderAlunos(turmaId); updateCount(turmaId); updateOverview(); salvarDados();
+    };
+    grid.appendChild(chip);
+  });
+  updateSummary(turmaId);
+}
+
+function togglePresenca(turmaId, nome) {
+  const a = presencas[turmaId][nome];
+  presencas[turmaId][nome] = a === '' ? 'presente' : a === 'presente' ? 'faltou' : '';
+  renderAlunos(turmaId); updateCount(turmaId); updateOverview(); salvarDados();
+}
+
+function marcarTodos(turmaId, estado) {
+  TURMAS_BASE[turmaId].forEach(n => presencas[turmaId][n] = estado);
+  (reposicoes[turmaId] || []).forEach(r => r.presente = estado === 'presente');
+  renderAlunos(turmaId); updateCount(turmaId); updateOverview(); salvarDados();
+}
+
+function adicionarReposicao(turmaId) {
+  const input = document.getElementById('repo-input-' + turmaId);
+  const nome = input.value.trim(); if (!nome) return;
+  reposicoes[turmaId].push({ nome, presente: true });
+  input.value = '';
+  renderAlunos(turmaId); updateCount(turmaId); updateOverview(); salvarDados();
+}
+
+function removerReposicao(turmaId, index) {
+  reposicoes[turmaId].splice(index, 1);
+  renderAlunos(turmaId); updateCount(turmaId); updateOverview(); salvarDados();
+}
+
+function updateCount(turmaId) {
+  const rep = reposicoes[turmaId] || [];
+  const presentes = TURMAS_BASE[turmaId].filter(a => presencas[turmaId][a] === 'presente').length + rep.filter(r => r.presente).length;
+  const total = TURMAS_BASE[turmaId].length + rep.length;
+  const el = document.getElementById('count-' + turmaId);
+  if (el) el.textContent = `${total} aluno${total !== 1 ? 's' : ''}${presentes > 0 ? ` · ${presentes} presentes` : ''}`;
+}
+
+function updateSummary(turmaId) {
+  const rep = reposicoes[turmaId] || [];
+  const presentes = TURMAS_BASE[turmaId].filter(a => presencas[turmaId][a] === 'presente');
+  const faltaram = TURMAS_BASE[turmaId].filter(a => presencas[turmaId][a] === 'faltou');
+  const repP = rep.filter(r => r.presente).map(r => r.nome + ' ↩');
+  const el = document.getElementById('summary-' + turmaId);
+  if (!el) return;
+  const all = [...presentes, ...repP];
+  if (!all.length && !faltaram.length) { el.textContent = ''; return; }
+  let txt = '';
+  if (all.length) txt += `✓ ${all.join(', ')}`;
+  if (faltaram.length) txt += (txt ? '  ·  ' : '') + `✗ ${faltaram.join(', ')}`;
+  el.textContent = txt;
+}
+
+function updateOverview() {
+  const ids = DAY_MAP[currentDay] || Object.keys(TURMAS_BASE);
+  const horas = Object.fromEntries(Object.keys(TURMAS_BASE).map(k => [k, 3]));
+  let tt = 0, ta = 0, tp = 0, th = 0;
   ids.forEach(id => {
-    const alunos = turmas[id];
-    const repList = reposicoes[id] || [];
-    const presentes = alunos.filter(a => presencas[id][a] === 'presente');
-    const faltaram = alunos.filter(a => presencas[id][a] === 'faltou');
-    const repPresentes = repList.filter(r => r.presente).map(r => r.nome + ' ↩');
-    const todosPresentes = [...presentes, ...repPresentes];
+    if (!TURMAS_BASE[id]) return;
+    tt++;
+    ta += TURMAS_BASE[id].length + (reposicoes[id] || []).length;
+    tp += TURMAS_BASE[id].filter(a => presencas[id][a] === 'presente').length + (reposicoes[id] || []).filter(r => r.presente).length;
+    th += horas[id] || 3;
+  });
+  document.getElementById('ov-turmas').textContent = tt;
+  document.getElementById('ov-alunos').textContent = ta;
+  document.getElementById('ov-presentes').textContent = tp;
+  document.getElementById('ov-aulas').textContent = th + 'h';
+}
+
+function toggleTurma(id) { document.getElementById(id).classList.toggle('open'); }
+
+function showDay(day, btn) {
+  currentDay = day;
+  document.querySelectorAll('.week-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.day-section').forEach(s => {
+    s.classList.toggle('visible', day === 'all' || s.dataset.day === day);
+  });
+  updateOverview();
+}
+
+// ── REPOSIÇÃO INPUT SETUP ────────────────────────────────────────────────────
+function setupReposicaoRows() {
+  Object.keys(TURMAS_BASE).forEach(turmaId => {
+    const body = document.querySelector(`#${turmaId} .turma-body`);
+    if (!body || document.getElementById('repo-row-' + turmaId)) return;
+    const row = document.createElement('div');
+    row.className = 'reposicao-row'; row.id = 'repo-row-' + turmaId;
+    row.innerHTML = `<input class="reposicao-input" id="repo-input-${turmaId}" type="text" placeholder="+ Reposição — nome da aluna" /><button class="btn-add" onclick="adicionarReposicao('${turmaId}')">Adicionar</button>`;
+    const nota = body.querySelector('.nota-area');
+    body.insertBefore(row, nota);
+    row.querySelector('input').addEventListener('keydown', e => { if (e.key === 'Enter') adicionarReposicao(turmaId); });
+  });
+}
+
+// ── EXPORTAÇÃO ───────────────────────────────────────────────────────────────
+function gerarTexto() {
+  const seg = segundaAtual();
+  const qui = new Date(seg); qui.setDate(seg.getDate() + 3);
+  const fmt = d => `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}`;
+  let txt = `🏺 Ateliê Malu Serra\n📅 ${MESES_PT[cursor.mes]} ${cursor.ano} — Semana ${cursor.semana+1} (${fmt(seg)}–${fmt(qui)})\n\n`;
+  const ids = DAY_MAP[currentDay] || Object.keys(TURMAS_BASE);
+  ids.forEach(id => {
+    const rep = reposicoes[id] || [];
+    const presentes = TURMAS_BASE[id].filter(a => presencas[id][a] === 'presente');
+    const faltaram = TURMAS_BASE[id].filter(a => presencas[id][a] === 'faltou');
+    const repP = rep.filter(r => r.presente).map(r => r.nome + ' ↩');
+    const todos = [...presentes, ...repP];
     const nota = document.getElementById('nota-' + id)?.value?.trim();
-
-    // só inclui turmas que tenham algum dado marcado
-    if (todosPresentes.length === 0 && faltaram.length === 0 && !nota) return;
-
-    txt += `▸ ${nomesTurmas[id]}\n`;
-    if (todosPresentes.length) txt += `  ✓ ${todosPresentes.join(', ')}\n`;
+    if (!todos.length && !faltaram.length && !nota) return;
+    txt += `▸ ${NOMES_TURMAS[id]}\n`;
+    if (todos.length) txt += `  ✓ ${todos.join(', ')}\n`;
     if (faltaram.length) txt += `  ✗ Faltaram: ${faltaram.join(', ')}\n`;
     if (nota) txt += `  📝 ${nota}\n`;
     txt += '\n';
   });
-
   if (txt.split('\n').length <= 4) txt += '(nenhuma presença marcada ainda)';
   return txt.trim();
 }
@@ -1001,18 +866,10 @@ function abrirExport() {
   document.getElementById('modal-export').classList.add('open');
 }
 
-function fecharModal() {
-  document.getElementById('modal-export').classList.remove('open');
-}
-
-function fecharModalFora(e) {
-  if (e.target === document.getElementById('modal-export')) fecharModal();
-}
-
 function copiarTexto() {
   const txt = document.getElementById('modal-content').textContent;
   navigator.clipboard.writeText(txt).then(() => {
-    const btn = document.querySelector('.modal-btn.primary');
+    const btn = document.querySelector('#modal-export .modal-btn.primary');
     btn.textContent = '✓ Copiado!';
     setTimeout(() => btn.textContent = '📋 Copiar', 2000);
   });
@@ -1020,28 +877,133 @@ function copiarTexto() {
 
 function compartilhar() {
   const txt = document.getElementById('modal-content').textContent;
-  if (navigator.share) {
-    navigator.share({ text: txt });
-  } else {
-    copiarTexto();
+  if (navigator.share) navigator.share({ text: txt }); else copiarTexto();
+}
+
+// ── HISTÓRICO ────────────────────────────────────────────────────────────────
+function abrirHistorico() {
+  // Varre todos os keys do localStorage com prefixo "atelie-"
+  const registros = {};
+  for (let i = 0; i < localStorage.length; i++) {
+    const k = localStorage.key(i);
+    if (!k.startsWith('atelie-')) continue;
+    // formato: atelie-YYYY-MM-sN
+    const m = k.match(/^atelie-(\d{4})-(\d{2})-s(\d+)$/);
+    if (!m) continue;
+    const [, ano, mesStr, semStr] = m;
+    const mesIdx = parseInt(mesStr) - 1;
+    const mesKey = `${ano}-${mesStr}`;
+    if (!registros[mesKey]) registros[mesKey] = { ano: parseInt(ano), mes: mesIdx, semanas: [] };
+    try {
+      const data = JSON.parse(localStorage.getItem(k));
+      registros[mesKey].semanas.push({ semana: parseInt(semStr), data });
+    } catch(e) {}
   }
+
+  // Ordena por data decrescente
+  const mesesOrdenados = Object.values(registros).sort((a,b) => b.ano - a.ano || b.mes - a.mes);
+
+  const cont = document.getElementById('hist-content');
+  if (!mesesOrdenados.length) {
+    cont.innerHTML = '<div class="hist-empty">Nenhum registro salvo ainda.</div>';
+  } else {
+    cont.innerHTML = mesesOrdenados.map((reg, idx) => {
+      const semanasHtml = reg.semanas.sort((a,b) => a.semana - b.semana).map(s => {
+        const seg = segundaFeiraDaSemana(reg.ano, reg.mes, s.semana);
+        const qui = new Date(seg); qui.setDate(seg.getDate() + 3);
+        const fmt = d => `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}`;
+        const resumo = gerarTextoDeData(s.data, reg.ano, reg.mes, s.semana);
+        return `<div class="hist-semana-item">
+          <div class="hist-semana-label">Semana ${s.semana+1} · ${fmt(seg)}–${fmt(qui)}</div>
+          <div class="hist-semana-text">${resumo || '(sem dados)'}</div>
+        </div>`;
+      }).join('');
+      return `<div class="hist-mes-item" id="hist-mes-${idx}">
+        <div class="hist-mes-header" onclick="document.getElementById('hist-mes-${idx}').classList.toggle('open')">
+          <span>${MESES_PT[reg.mes]} ${reg.ano}</span><span>▼</span>
+        </div>
+        <div class="hist-mes-body">${semanasHtml}</div>
+      </div>`;
+    }).join('');
+  }
+  document.getElementById('modal-hist').classList.add('open');
 }
 
-function showDay(day) {
-  document.querySelectorAll('.week-btn').forEach(b => b.classList.remove('active'));
-  event.target.classList.add('active');
-  document.querySelectorAll('.day-section').forEach(s => {
-    if (day === 'all' || s.dataset.day === day) {
-      s.classList.add('visible');
-    } else {
-      s.classList.remove('visible');
-    }
+function gerarTextoDeData(saved, ano, mes, semana) {
+  if (!saved) return '';
+  const { presencas: p, reposicoes: r, notas: n } = saved;
+  let linhas = [];
+  Object.keys(TURMAS_BASE).forEach(id => {
+    const rep = r && r[id] ? r[id] : [];
+    const presentes = p && p[id] ? TURMAS_BASE[id].filter(a => p[id][a] === 'presente') : [];
+    const faltaram = p && p[id] ? TURMAS_BASE[id].filter(a => p[id][a] === 'faltou') : [];
+    const repP = rep.filter(rv => rv.presente).map(rv => rv.nome + ' ↩');
+    const todos = [...presentes, ...repP];
+    const nota = n && n[id] ? n[id].trim() : '';
+    if (!todos.length && !faltaram.length && !nota) return;
+    let txt = `▸ ${NOMES_TURMAS[id]}\n`;
+    if (todos.length) txt += `  ✓ ${todos.join(', ')}\n`;
+    if (faltaram.length) txt += `  ✗ ${faltaram.join(', ')}\n`;
+    if (nota) txt += `  📝 ${nota}\n`;
+    linhas.push(txt);
   });
-  updateOverview();
+  return linhas.join('\n') || '';
 }
 
-buildTurmas();
-setDates();
+// ── MODAL UTILS ──────────────────────────────────────────────────────────────
+function fecharModal(id) { document.getElementById(id).classList.remove('open'); }
+function fecharModalFora(e, id) { if (e.target === document.getElementById(id)) fecharModal(id); }
+
+// ── BACKUP / RESTORE ─────────────────────────────────────────────────────────
+function exportarBackup() {
+  const dados = {};
+  for (let i = 0; i < localStorage.length; i++) {
+    const k = localStorage.key(i);
+    if (k.startsWith('atelie-')) {
+      try { dados[k] = JSON.parse(localStorage.getItem(k)); } catch(e) {}
+    }
+  }
+  const json = JSON.stringify(dados, null, 2);
+  const blob = new Blob([json], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  const hoje = new Date();
+  const dd = String(hoje.getDate()).padStart(2,'0');
+  const mm = String(hoje.getMonth()+1).padStart(2,'0');
+  const aa = hoje.getFullYear();
+  a.href = url;
+  a.download = `atelie-backup-${aa}-${mm}-${dd}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function importarBackup(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const dados = JSON.parse(e.target.result);
+      let count = 0;
+      for (const [k, v] of Object.entries(dados)) {
+        if (k.startsWith('atelie-')) {
+          localStorage.setItem(k, JSON.stringify(v));
+          count++;
+        }
+      }
+      alert(`✓ Backup restaurado com sucesso!\n${count} semana(s) importada(s).`);
+      atualizarTudo();
+    } catch(err) {
+      alert('Erro ao ler o arquivo. Verifique se é um backup válido do Ateliê.');
+    }
+  };
+  reader.readAsText(file);
+  event.target.value = '';
+}
+
+// ── INIT ─────────────────────────────────────────────────────────────────────
+setupReposicaoRows();
+atualizarTudo();
 </script>
 </body>
 </html>
